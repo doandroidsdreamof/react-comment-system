@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import './App.css'
-import Comment from './components/Comment'
+import Comment from './components/comments/Comment'
 
 function App() {
+let deneme = 'deneme'
+
   return (
     <div className=''>
-      <h1 className='underline text-2xl '>comments</h1>
+        <Comment x={deneme} />
+
+
     </div>
   )
 }
