@@ -3,13 +3,12 @@ import { AuthContextInterFace } from "../types/Interfaces";
 
 export const AuthContext = React.createContext<AuthContextInterFace | null>(null)
 
-export const ContextProvider = (props: any) => {
+export const AuthProvider  = ({children}: any) => {
   const [user, setUser] = useState<AuthContextInterFace | null>(null)
 
-
   return (
-    <AuthContext.Provider value={user} >
-      {props.children}
+    <AuthContext.Provider value={user}>
+      {children}
     </AuthContext.Provider>
   )
 }
