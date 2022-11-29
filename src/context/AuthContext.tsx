@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { createContext, useEffect,useState } from "react";
+import { AuthContextInterFace } from "../types/Interfaces";
 
-const AuthContext = () => {
+export const AuthContext = React.createContext<AuthContextInterFace | null>(null)
+
+export const ContextProvider = (props: any) => {
+  const [user, setUser] = useState<AuthContextInterFace | null>(null)
+
+
   return (
-    <div>AuthContext</div>
+    <AuthContext.Provider value={user} >
+      {props.children}
+    </AuthContext.Provider>
   )
 }
-
-export default AuthContext

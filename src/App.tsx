@@ -1,17 +1,20 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import './App.css'
 import Comment from './components/comments/Comment'
 import {auth} from './firebase'
+import {AuthContext} from './context/AuthContext'
 
 function App() {
-const deneme: string = 'deneme'
+  const user = useContext(AuthContext)
+  console.log("🚀 ~ file: App.tsx:9 ~ App ~ user", user)
 
-console.log("🚀 ~ file: App.tsx:10 ~ App ~ auth", auth)
+
+
 
 
   return (
     <div className=''>
-        <Comment x={deneme} />
+        <Comment />
 
 
     </div>
