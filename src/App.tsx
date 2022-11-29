@@ -3,7 +3,7 @@ import './App.css'
 import Comment from './components/comments/Comment'
 
 function App() {
-let deneme = 'deneme'
+const deneme: string = 'deneme'
 
   return (
     <div className=''>
