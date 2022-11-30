@@ -6,6 +6,7 @@ import { logout, login, selectUser } from './store/reducers/userSlice'
 
 import './App.css'
 import LoginPage from './pages/LoginPage.jsx'
+import RegisterPage from './pages/RegisterPage.jsx'
 
 function App() {
   const user = useContext(AuthContext)
@@ -16,7 +17,7 @@ function App() {
 
     <>
 
-<LoginPage />
+<RegisterPage />
 
 
 
