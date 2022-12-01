@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 // alert popups //
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +8,10 @@ import { injectStyle } from 'react-toastify/dist/inject-style';
 
 import { NewUser } from '../../types/types';
 import RegisterReducer from '../../hooks/RegisterReducer';
+
+import { useDispatch } from 'react-redux';
+import {auth,createUserWithEmailAndPassword,updateProfile,signInWithEmailAndPassword,getAuth} from 'firebase/auth';
+
 
 function RegisterForm() {
   const formState: NewUser = {

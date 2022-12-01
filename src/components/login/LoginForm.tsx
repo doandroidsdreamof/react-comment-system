@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
 
 import LoginResetPassword from './LoginResetPassword';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 // alert popups //
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
 
 import { CurrentUser } from '../../types/types';
+import {auth,createUserWithEmailAndPassword,updateProfile,signInWithEmailAndPassword,getAuth} from 'firebase/auth';
 
 import LoginReducer from '../../hooks/LoginReducer';
 
