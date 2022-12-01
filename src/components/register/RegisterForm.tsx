@@ -1,17 +1,28 @@
-import React, { useState } from 'react'
+import React, {useState,useEffect,useContext} from 'react'
+
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+
+
 
 // alert popups //
 import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify'
+import { injectStyle } from 'react-toastify/dist/inject-style'
+
+import { NewUser } from '../../types/types'
+
+
+
+
 
 const RegisterForm = () => {
-  const [name, setName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [formData, setFormData] = useState();
+
+
+
 
   const formValidation = (e) => {
     e.preventDefault()
-    const emailValidation = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
     alert('ok')
   }
 

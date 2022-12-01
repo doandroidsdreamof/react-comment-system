@@ -1,14 +1,13 @@
-import React, { createContext, useEffect,useState } from "react";
-import { AuthContextInterFace } from "../types/Interfaces";
+import React, { createContext, useEffect, useState } from 'react'
 
-export const AuthContext = React.createContext<AuthContextInterFace | null>(null)
+import { AuthContextInterFace } from '../types/interfaces'
 
-export const AuthProvider  = ({children}: any) => {
+export const AuthContext = React.createContext<AuthContextInterFace | null>(
+  null,
+)
+
+export const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<AuthContextInterFace | null>(null)
 
-  return (
-    <AuthContext.Provider value={user}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>
 }
