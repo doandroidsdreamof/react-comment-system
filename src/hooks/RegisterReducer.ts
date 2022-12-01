@@ -1,29 +1,34 @@
 import React from 'react';
 
-const RegisterReducer = (state: any, action: any) => {
+// const [datas,dispatch] = useReducer(RegisterForm,formState)
+
+const RegisterReducer = function (state: any, action: any) {
   switch (action.type) {
     case 'name':
-      return {
+      return{
         ...state,
-        [action.type]: action.payload,
-      };
+        [action.type]: action.payload
+      }
     case 'lastName':
-      return {
+      return{
         ...state,
-        [action.type]: action.payload,
-      };
+        [action.type]: action.payload
+      }
     case 'email':
-      return {
+      return{
         ...state,
-        [action.type]: action.payload,
-      };
+        [action.type]: action.payload
+      }
+
     case 'password':
-      return {
+      return{
         ...state,
-        [action.type]: action.payload,
-      };
-    default:
-      return state;
+        [action.type]: action.payload
+      }
+      default:
+        return state;
+
+
   }
 };
 

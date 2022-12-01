@@ -18,52 +18,22 @@ function RegisterForm() {
     password: '',
   };
 
-  const [datas,dispatch] = useReducer(RegisterReducer,formState)
+  const [datas, dispatch] = useReducer(RegisterReducer, formState);
+
   console.log(
     '🚀 ~ file: RegisterForm.tsx:20 ~ RegisterForm ~ formData',
     datas,
   );
 
-  const formValidation = (e: any) => {
+  const formValidation = (e: React.FormEvent<HTMLInputElement>):void => {
     e.preventDefault();
   };
 
-/*
   const handleInputs = (e: any) => {
-    switch (e.name) {
-      case 'name':
-        setFormData((items) => ({
-          ...items,
-          name: e.value,
-        }));
-        break;
-      case 'last name':
-        setFormData((items) => ({
-          ...items,
-          lastName: e.value,
-        }));
-        break;
-      case 'email':
-        setFormData((items) => ({
-          ...items,
-          email: e.value,
-        }));
-        break;
-      case 'password':
-        setFormData((items) => ({
-          ...items,
-          password: e.value,
-        }));
-        break;
-    }
-  };
-  */
-
-  const handleInputs = (e: any) => {
- dispatch({
-  type: e.name,
-  payload: e.value
- })
+    dispatch({
+      type: e.name,
+      payload: e.value,
+    });
   };
 
   return (
@@ -75,7 +45,7 @@ function RegisterForm() {
           id='name'
           required
           placeholder='name'
-          onChange={(e) => handleInputs(e.target)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputs(e.target)}
           className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
         />
       </div>
@@ -84,7 +54,7 @@ function RegisterForm() {
           type='text'
           name='lastName'
           id='lastName'
-          onChange={(e) => handleInputs(e.target)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputs(e.target)}
           required
           placeholder='last name'
           className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
@@ -95,7 +65,7 @@ function RegisterForm() {
           type='email'
           name='email'
           id='email'
-          onChange={(e) => handleInputs(e.target)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputs(e.target)}
           required
           placeholder='email'
           className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
@@ -106,7 +76,7 @@ function RegisterForm() {
           type='password'
           name='password'
           id='password'
-          onChange={(e) => handleInputs(e.target)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputs(e.target)}
           required
           placeholder='password'
           minLength={8}
