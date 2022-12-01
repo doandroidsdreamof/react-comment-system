@@ -1,68 +1,117 @@
-import React, {useState,useEffect,useContext} from 'react'
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-
-
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 // alert popups //
-import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer, toast } from 'react-toastify'
-import { injectStyle } from 'react-toastify/dist/inject-style'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { injectStyle } from 'react-toastify/dist/inject-style';
 
-import { NewUser } from '../../types/types'
+import { NewUser } from '../../types/types';
+import RegisterReducer from '../../hooks/RegisterReducer';
 
+function RegisterForm() {
+  const formState: NewUser = {
+    name: '',
+    lastName: '',
+    email: '',
+    password: '',
+  };
 
+  const [datas,dispatch] = useReducer(RegisterReducer,formState)
+  console.log(
+    '🚀 ~ file: RegisterForm.tsx:20 ~ RegisterForm ~ formData',
+    datas,
+  );
 
+  const formValidation = (e: any) => {
+    e.preventDefault();
+  };
 
+/*
+  const handleInputs = (e: any) => {
+    switch (e.name) {
+      case 'name':
+        setFormData((items) => ({
+          ...items,
+          name: e.value,
+        }));
+        break;
+      case 'last name':
+        setFormData((items) => ({
+          ...items,
+          lastName: e.value,
+        }));
+        break;
+      case 'email':
+        setFormData((items) => ({
+          ...items,
+          email: e.value,
+        }));
+        break;
+      case 'password':
+        setFormData((items) => ({
+          ...items,
+          password: e.value,
+        }));
+        break;
+    }
+  };
+  */
 
-const RegisterForm = () => {
-  const [formData, setFormData] = useState();
-
-
-
-
-  const formValidation = (e) => {
-    e.preventDefault()
-    alert('ok')
-  }
+  const handleInputs = (e: any) => {
+ dispatch({
+  type: e.name,
+  payload: e.value
+ })
+  };
 
   return (
     <>
       <div className='flex flex-col items-end'>
         <input
-                type="text"
-                name="name"
-                id="name"
-                placeholder='name'
-                className="focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2 invalid:ring-red-400 focus:ring-2 focus:ring-cyan-300"
-             />
+          type='text'
+          name='name'
+          id='name'
+          required
+          placeholder='name'
+          onChange={(e) => handleInputs(e.target)}
+          className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
+        />
       </div>
       <div className='flex flex-col items-end'>
         <input
-                type="text"
-                name="last name"
-                id="last name"
-                placeholder='last name'
-                className="focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2 invalid:ring-red-400 focus:ring-2 focus:ring-cyan-300"
-             />
+          type='text'
+          name='lastName'
+          id='lastName'
+          onChange={(e) => handleInputs(e.target)}
+          required
+          placeholder='last name'
+          className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
+        />
       </div>
       <div className='flex flex-col '>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder='email'
-                className="focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2 invalid:ring-red-400 focus:ring-2 focus:ring-cyan-300"
-             />
+        <input
+          type='email'
+          name='email'
+          id='email'
+          onChange={(e) => handleInputs(e.target)}
+          required
+          placeholder='email'
+          className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
+        />
       </div>
       <div className='flex flex-col items-end'>
         <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder='password'
-                className="focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2 invalid:ring-red-400 focus:ring-2 focus:ring-cyan-300"
-             />
+          type='password'
+          name='password'
+          id='password'
+          onChange={(e) => handleInputs(e.target)}
+          required
+          placeholder='password'
+          minLength={8}
+          className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
+        />
       </div>
       <button
         onSubmit={formValidation}
@@ -71,7 +120,7 @@ const RegisterForm = () => {
         <span className='text-base font-semibold text-white '>Register</span>
       </button>
     </>
-  )
+  );
 }
 
-export default RegisterForm
+export default RegisterForm;

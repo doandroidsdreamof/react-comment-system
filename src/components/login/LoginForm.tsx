@@ -18,8 +18,9 @@ const LoginForm = () => {
           type='email'
           name='email'
           id='email'
+          required
           placeholder='email'
-          className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2 invalid:ring-red-400 focus:ring-2 focus:ring-cyan-300'
+          className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2 focus:ring-2 focus:ring-cyan-300'
         />
       </div>
       <div className='flex flex-col items-end'>
@@ -27,8 +28,10 @@ const LoginForm = () => {
           type='password'
           name='password'
           id='password'
+          required
+          minLength={8}
           placeholder='password'
-          className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2 invalid:ring-red-400 focus:ring-2 focus:ring-cyan-300'
+          className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
         />
         <LoginResetPassword />
         <div className='w-full'>

@@ -4,7 +4,7 @@ import RegisterHead from '../components/register/RegisterHead'
 import RegisterLoginLink from '../components/register/RegisterLoginLink'
 import RegisterForm from '../components/register/RegisterForm'
 
-const RegisterPage = () => {
+function RegisterPage () {
   return (
     <div className='m-auto xl:container px-12 sm:px-0 mx-auto'>
       <div className='mx-auto h-full sm:w-max'>
