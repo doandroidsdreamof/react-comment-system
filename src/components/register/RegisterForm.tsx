@@ -20,11 +20,6 @@ function RegisterForm() {
 
   const [datas, dispatch] = useReducer(RegisterReducer, formState);
 
-  console.log(
-    '🚀 ~ file: RegisterForm.tsx:20 ~ RegisterForm ~ formData',
-    datas,
-  );
-
   const formValidation = (e: React.FormEvent<HTMLInputElement>):void => {
     e.preventDefault();
   };

@@ -5,3 +5,8 @@ export type NewUser = {
   password?: string;
 };
 
+export type CurrentUser = {
+  email?: string;
+  password?: string;
+};
+

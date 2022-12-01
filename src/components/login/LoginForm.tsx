@@ -1,16 +1,33 @@
-import React, {useState,useEffect,useContext} from 'react'
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 
-import LoginResetPassword from './LoginResetPassword'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { Field, Form, Formik } from 'formik'
-
+import LoginResetPassword from './LoginResetPassword';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 // alert popups //
-import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer, toast } from 'react-toastify'
-import { injectStyle } from 'react-toastify/dist/inject-style'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { injectStyle } from 'react-toastify/dist/inject-style';
+
+import { CurrentUser } from '../../types/types';
+
+import LoginReducer from '../../hooks/LoginReducer';
 
 const LoginForm = () => {
+  const LoginState: CurrentUser = {
+    email: '',
+    password: '',
+  };
+  const [data, dispatch] = useReducer(LoginReducer, LoginState);
+
+
+  const handleInput = (e: any) => {
+    dispatch({
+      type: e.name,
+      payload: e.value
+
+    });
+  };
+
   return (
     <>
       <div className='flex flex-col items-end'>
@@ -19,6 +36,9 @@ const LoginForm = () => {
           name='email'
           id='email'
           required
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleInput(e.target)
+          }
           placeholder='email'
           className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2 focus:ring-2 focus:ring-cyan-300'
         />
@@ -30,6 +50,9 @@ const LoginForm = () => {
           id='password'
           required
           minLength={8}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleInput(e.target)
+          }
           placeholder='password'
           className='focus:outline-none block w-full rounded-md border border-gray-400  bg-transparent px-4 py-3 text-gray-600 transition duration-300 invalid:ring-2  focus:ring-2 focus:ring-cyan-300'
         />
@@ -41,7 +64,7 @@ const LoginForm = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

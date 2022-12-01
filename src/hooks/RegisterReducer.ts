@@ -1,6 +1,5 @@
 import React from 'react';
 
-// const [datas,dispatch] = useReducer(RegisterForm,formState)
 
 const RegisterReducer = function (state: any, action: any) {
   switch (action.type) {
