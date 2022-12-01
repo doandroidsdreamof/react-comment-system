@@ -11,7 +11,7 @@ const LoginPage = () => {
         <div className='m-auto  py-12'>
           <div className='mt-12 rounded-3xl border bg-gray-50  -mx-6 sm:-mx-10 p-8 sm:p-10'>
             <LoginHead />
-            <form className='mt-10 space-y-8'>
+            <form onSubmit={(e) => e.preventDefault()} className='mt-10 space-y-8'>
               <LoginForm />
               <LoginLinks />
             </form>
