@@ -19,6 +19,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { AuthContext } from '../../context/AuthContext';
 import insertDatabase from '../../hooks/insertDatabase';
+import updateDisplayName from '../../hooks/updateDisplayName';
 
 
 function RegisterForm() {
@@ -35,11 +36,11 @@ function RegisterForm() {
 
 
   const formValidation = (e: React.FormEvent<HTMLInputElement>) => {
-
     createUserWithEmailAndPassword(auth, datas?.email, datas?.password)
       .then((userCredential) => {
         const user = userCredential.user;
         insertDatabase({datas})
+        updateDisplayName(datas.name)
 
       })
       .catch((error) => {
@@ -56,7 +57,6 @@ function RegisterForm() {
   };
 
   const handleInputs = (e: any) => {
-
     dispatch({
       type: e.name,
       payload: e.value,

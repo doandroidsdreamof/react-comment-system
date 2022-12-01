@@ -27,3 +27,7 @@ const insertDatabase =  function ({datas}: any) {
   };
 
   export default insertDatabase;
+
+
+
+
