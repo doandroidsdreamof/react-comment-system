@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
 
 // alert popups //
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify'
 import { injectStyle } from 'react-toastify/dist/inject-style';
 
 import { NewUser } from '../../types/types';
-import RegisterReducer from '../../hooks/RegisterReducer';
+import RegisterReducer from '../../hooks/registerReducer';
 
 import { useDispatch } from 'react-redux';
 import {
@@ -17,6 +17,9 @@ import {
 } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { AuthContext } from '../../context/AuthContext';
+import insertDatabase from '../../hooks/insertDatabase';
+
 
 function RegisterForm() {
   const formState: NewUser = {
@@ -28,51 +31,41 @@ function RegisterForm() {
 
   const [datas, dispatch] = useReducer(RegisterReducer, formState);
   const auth = getAuth();
-  console.log('🚀 ~ file: RegisterForm.tsx:26 ~ RegisterForm ~ auth', auth);
+  const user = useContext(AuthContext)
+
 
   const formValidation = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
+
     createUserWithEmailAndPassword(auth, datas?.email, datas?.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        addDataToFirestore()
+        insertDatabase({datas})
+
       })
       .catch((error) => {
         console.log("🚀 ~ file: RegisterForm.tsx:41 ~ formValidation ~ error", error)
         const errorCode = error.code;
         const errorMessage = error.message;
+        injectStyle()
+        toast.dark("Registration unsuccessful",{
+          toastId:1
+        })
+
+
       });
   };
 
   const handleInputs = (e: any) => {
+
     dispatch({
       type: e.name,
       payload: e.value,
     });
   };
 
-  const addDataToFirestore = async function () {
-    try {
-      const docRef = await addDoc(collection(db, 'users'), {
-        name: datas?.name,
-        lastName: datas?.lastName,
-        email: datas?.email,
-        date: new Date().toLocaleString(),
-        comments: {
-          id: 0,
-          comment: '',
-          parentId: null,
-          createdAt: '',
-        },
-      });
-      console.log('Document written with ID: ', docRef.id);
-    } catch (e) {
-      console.error('Error adding document: ', e);
-    }
-  };
-
   return (
     <>
+     <ToastContainer />
       <div className='flex flex-col items-end'>
         <input
           type='text'

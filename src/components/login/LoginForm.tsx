@@ -10,7 +10,7 @@ import { injectStyle } from 'react-toastify/dist/inject-style';
 import { CurrentUser } from '../../types/types';
 import {auth,createUserWithEmailAndPassword,updateProfile,signInWithEmailAndPassword,getAuth} from 'firebase/auth';
 
-import LoginReducer from '../../hooks/LoginReducer';
+import LoginReducer from '../../hooks/loginReducer';
 
 const LoginForm = () => {
   const LoginState: CurrentUser = {
