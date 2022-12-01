@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
 
-// alert popups //
-import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer, toast } from 'react-toastify'
-import { injectStyle } from 'react-toastify/dist/inject-style';
+;
 
 import { NewUser } from '../../types/types';
 import RegisterReducer from '../../hooks/registerReducer';
@@ -20,7 +17,11 @@ import { db } from '../../firebase';
 import { AuthContext } from '../../context/AuthContext';
 import insertDatabase from '../../hooks/insertDatabase';
 import updateDisplayName from '../../hooks/updateDisplayName';
-
+import createUser from '../../hooks/createUser'
+// alert popups //
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { injectStyle } from 'react-toastify/dist/inject-style';
 
 function RegisterForm() {
   const formState: NewUser = {
@@ -31,29 +32,11 @@ function RegisterForm() {
   };
 
   const [datas, dispatch] = useReducer(RegisterReducer, formState);
-  const auth = getAuth();
   const user = useContext(AuthContext)
 
 
   const formValidation = (e: React.FormEvent<HTMLInputElement>) => {
-    createUserWithEmailAndPassword(auth, datas?.email, datas?.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        insertDatabase({datas})
-        updateDisplayName(datas.name)
-
-      })
-      .catch((error) => {
-        console.log("🚀 ~ file: RegisterForm.tsx:41 ~ formValidation ~ error", error)
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        injectStyle()
-        toast.dark("Registration unsuccessful",{
-          toastId:1
-        })
-
-
-      });
+    createUser({datas})
   };
 
   const handleInputs = (e: any) => {
