@@ -1,27 +1,14 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
 
-;
-
 import { NewUser } from '../../types/types';
 import RegisterReducer from '../../hooks/registerReducer';
 
-import { useDispatch } from 'react-redux';
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-  signInWithEmailAndPassword,
-  getAuth,
-} from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
 import { AuthContext } from '../../context/AuthContext';
-import insertDatabase from '../../hooks/insertDatabase';
-import updateDisplayName from '../../hooks/updateDisplayName';
-import createUser from '../../hooks/createUser'
+import createUser from '../../hooks/createUser';
+
 // alert popups //
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { injectStyle } from 'react-toastify/dist/inject-style';
 
 function RegisterForm() {
   const formState: NewUser = {
@@ -32,11 +19,10 @@ function RegisterForm() {
   };
 
   const [datas, dispatch] = useReducer(RegisterReducer, formState);
-  const user = useContext(AuthContext)
-
+  const user = useContext(AuthContext);
 
   const formValidation = (e: React.FormEvent<HTMLInputElement>) => {
-    createUser({datas})
+    createUser({ datas });
   };
 
   const handleInputs = (e: any) => {
@@ -48,7 +34,7 @@ function RegisterForm() {
 
   return (
     <>
-     <ToastContainer />
+      <ToastContainer />
       <div className='flex flex-col items-end'>
         <input
           type='text'
