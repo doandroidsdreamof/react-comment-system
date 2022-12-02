@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
-
+// local imports //
 import LoginResetPassword from './LoginResetPassword';
-
+import { CurrentUser } from '../../types/types';
+import LoginReducer from '../../hooks/loginReducer';
 // alert popups //
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
-
-import { CurrentUser } from '../../types/types';
-import {auth,createUserWithEmailAndPassword,updateProfile,signInWithEmailAndPassword,getAuth} from 'firebase/auth';
-
-import LoginReducer from '../../hooks/loginReducer';
+// firebase //
+import {signInWithEmailAndPassword,getAuth} from 'firebase/auth';
+// router-dom //
+import { useNavigate } from 'react-router-dom'
+// redux //
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, login, selectUser } from '../../store/reducers/userSlice'
 
 const LoginForm = () => {
   const LoginState: CurrentUser = {
@@ -18,7 +21,8 @@ const LoginForm = () => {
     password: '',
   };
   const [data, dispatch] = useReducer(LoginReducer, LoginState);
-
+  const auth = getAuth();
+  const navigate = useNavigate()
 
   const handleInput = (e: any) => {
     dispatch({
@@ -28,8 +32,23 @@ const LoginForm = () => {
     });
   };
 
+  function handleSubmit(){
+    signInWithEmailAndPassword(auth,data.email,data.password)
+    .then((userCredential) =>{
+        navigate('/home')
+    })
+    .catch((error) =>{
+        injectStyle();
+        toast.dark('Login unsuccessful', {
+          toastId: 2,
+        });
+    })
+  }
+
+
   return (
     <>
+          <ToastContainer />
       <div className='flex flex-col items-end'>
         <input
           type='email'
@@ -58,7 +77,7 @@ const LoginForm = () => {
         />
         <LoginResetPassword />
         <div className='w-full'>
-          <button className='w-full rounded-full bg-sky-500 h-11 flex items-center justify-center px-6 py-3 transition hover:bg-sky-600 focus:bg-sky-600 active:bg-sky-800'>
+          <button onClick={() => handleSubmit()}  className='w-full rounded-full bg-sky-500 h-11 flex items-center justify-center px-6 py-3 transition hover:bg-sky-600 focus:bg-sky-600 active:bg-sky-800'>
             <span className='text-base font-semibold text-white '>Login</span>
           </button>
         </div>
