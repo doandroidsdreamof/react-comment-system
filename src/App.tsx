@@ -21,13 +21,11 @@ function App() {
   const dispatch = useDispatch()
   const auth = getAuth()
   const userRedux = useSelector(selectUser);
-  console.log("🚀 ~ file: App.tsx:24 ~ App ~ userRedux", userRedux)
   console.log("🚀 ~ file: App.tsx:21 ~ App ~ context", user)
 
 
   useEffect(() => {
     onAuthStateChanged(auth, (userAuth) => {
-      console.log("🚀 ~ file: App.tsx:29 ~ onAuthStateChanged ~ userAuth", userAuth)
       if (userAuth) {
         dispatch(
           login({
