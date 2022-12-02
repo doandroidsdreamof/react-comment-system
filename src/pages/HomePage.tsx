@@ -1,5 +1,4 @@
 import React from 'react';
-import Logout from '../components/common/Logout';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from '../firebase';
 import { logout, selectUser } from '../store/reducers/userSlice';
@@ -17,7 +16,7 @@ const HomePage = () => {
     <div>
 
       <NavigationBar />
-      <Logout />
+
     </div>
   )
 }
