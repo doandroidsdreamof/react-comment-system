@@ -35,7 +35,7 @@ const LoginForm = () => {
   function handleSubmit(){
     signInWithEmailAndPassword(auth,data.email,data.password)
     .then((userCredential) =>{
-        navigate('/home')
+        navigate('/')
     })
     .catch((error) =>{
         injectStyle();

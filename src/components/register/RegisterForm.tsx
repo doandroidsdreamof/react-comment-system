@@ -33,13 +33,14 @@ function RegisterForm() {
   const auth: any = getAuth();
   const navigate = useNavigate()
 
+
   const formValidation = (e: React.FormEvent<HTMLInputElement>) => {
     createUserWithEmailAndPassword(auth, datas?.email, datas?.password)
       .then((userCredential) => {
         const user = userCredential.user;
         insertDatabase({ datas });
         updateDisplayName(datas.name);
-        // navigate('/home')
+        navigate('/')
 
       })
       .catch((error) => {
