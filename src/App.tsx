@@ -21,7 +21,6 @@ function App() {
   const dispatch = useDispatch()
   const auth = getAuth()
   const userRedux = useSelector(selectUser);
-  console.log("🚀 ~ file: App.tsx:21 ~ App ~ context", user)
 
 
   useEffect(() => {
@@ -32,6 +31,7 @@ function App() {
             email: userAuth.email,
             uid: userAuth.uid,
             displayName: userAuth.displayName,
+            photoUrl: userAuth.photoURL,
           })
         );
       } else {

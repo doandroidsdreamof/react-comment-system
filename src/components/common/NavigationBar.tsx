@@ -21,13 +21,13 @@ import fallbackImage from '../../assets/images/fallback-image.png';
 
 const NavigationBar = () => {
   const [image, setImage]: any = useState(fallbackImage);
-  const [uploadedImage, setUploadedImage]: any = useState('');
-  const [progressPercent, setProgressPercent] = useState(0)
   const refImage: any = useRef();
   const storage = getStorage();
   const auth: any = getAuth()
+
+
   useEffect(()=>{
-    
+    updateProfilePhoto()
   },[image])
 
 
@@ -36,53 +36,30 @@ const NavigationBar = () => {
     e.preventDefault();
     refImage.current.click();
     const file = e.target[0]?.files[0]
-    console.log("🚀 ~ file: NavigationBar.tsx:39 ~ handleUpload ~ file", file)
-    if (!file) return null;
-    const storageRef = ref(storage, `files/${file.name}`)
+    const storageRef = ref(storage, `${file.name}`)
     const uploadTask = uploadBytesResumable(storageRef, file)
-    uploadTask.on("state_changed",
-      (snapshot) => {
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-        setProgressPercent(progress)
-      },
-      (error) => {
-        console.error(error)
-      },
-      () => {
-        e.target[0].value = ''
-        getDownloadURL(storageRef).then((downloadURL) => {
-          setImage(downloadURL)
-        })
-      }
-      )
-    updateProfile(auth?.currentUser, { photoURL: `${file?.name}` })
-      .then(() => {
-        injectStyle();
-        toast.dark('image uploaded', {
-          toastId: 5,
-        });
-      }).catch((error) => {
-        console.error(error);
-        injectStyle();
-        toast.dark('image could not uploaded', {
-          toastId: 4,
-        });
-      });
-
+    updateProfile(auth?.currentUser, { photoURL: `${file.name}` })
+    updateProfilePhoto()
+    setImage(auth?.currentUser?.photoURL)
   }
 
-  console.log("🚀 ~ file: NavigationBar.tsx:24 ~ NavigationBar ~ image", image)
-  console.log("🚀 ~ file: NavigationBar.tsx:24 ~ NavigationBar ~ image", auth.currentUser.photoURL)
+function updateProfilePhoto(){
+  const storageRef = ref(storage, `${auth?.currentUser?.photoURL}`)
+  getDownloadURL(storageRef).then((downloadURL) => {
+    setImage(downloadURL)
+  })
 
+}
 
   return (
     <Navbar fluid={true} rounded={true} className=' bg-white rounded-none'>
+      <ToastContainer />
       <Navbar.Brand>
-        <span className='self-center whitespace-nowrap text-xl font-semibold text-sky-600'>
+        <div className='absolute left-2 whitespace-nowrap text-xl font-semibold text-sky-600'>
           Comments-System
-        </span>
+        </div>
       </Navbar.Brand>
-      <div className='flex md:order-2'>&
+      <div className='flex  md:order-2'>&
         <Dropdown
           arrowIcon={false}
           inline={true}
@@ -102,7 +79,7 @@ const NavigationBar = () => {
                 accept='.jpg,.jpeg,.png'
                 style={{ display: 'none' }}
               />
-              <button type='submit'>Upload image</button>
+              <label htmlFor='upload-image'>Upload image</label>
               </form>
             </Dropdown.Item>
           <Dropdown.Item>Sign out</Dropdown.Item>
