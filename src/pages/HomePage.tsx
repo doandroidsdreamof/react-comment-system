@@ -14,9 +14,7 @@ const HomePage = () => {
 
   return (
     <div>
-
       <NavigationBar />
-
     </div>
   )
 }

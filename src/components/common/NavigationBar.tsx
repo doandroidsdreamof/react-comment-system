@@ -20,36 +20,37 @@ import { injectStyle } from 'react-toastify/dist/inject-style';
 import fallbackImage from '../../assets/images/fallback-image.png';
 
 const NavigationBar = () => {
-  const [image, setImage]: any = useState(fallbackImage);
+  const [image, setImage]: any = useState("");
   const refImage: any = useRef();
   const storage = getStorage();
   const auth: any = getAuth()
 
 
-  useEffect(()=>{
-    updateProfilePhoto()
-  },[image])
+  useEffect(() => {
 
+
+
+
+
+  }, [])
 
   // set image user profile and upload firebase storage //
-  const handleUpload = (e: any) => {
+  function handleUpload(e) {
     e.preventDefault();
     refImage.current.click();
-    const file = e.target[0]?.files[0]
-    const storageRef = ref(storage, `${file.name}`)
-    const uploadTask = uploadBytesResumable(storageRef, file)
-    updateProfile(auth?.currentUser, { photoURL: `${file.name}` })
-    updateProfilePhoto()
-    setImage(auth?.currentUser?.photoURL)
+    const storageRef = ref(storage, `usersAvatar/${image.name}`);
+    updateProfile(auth.currentUser, { photoURL: `${image.name}` })
+      .then(() => {
+
+        console.log("success");
+      }).catch((error) => { console.log(error); });
+
+
   }
 
-function updateProfilePhoto(){
-  const storageRef = ref(storage, `${auth?.currentUser?.photoURL}`)
-  getDownloadURL(storageRef).then((downloadURL) => {
-    setImage(downloadURL)
-  })
+  console.log(image)
 
-}
+
 
   return (
     <Navbar fluid={true} rounded={true} className=' bg-white rounded-none'>
@@ -63,25 +64,24 @@ function updateProfilePhoto(){
         <Dropdown
           arrowIcon={false}
           inline={true}
-          label={<Avatar alt='User settings' img={image} rounded={true} /> } >
+          label={<Avatar alt='User settings' img={fallbackImage} rounded={true} />} >
           <Dropdown.Header>
             <span className='block text-sm'>Bonnie Green</span>
             <span className='block truncate text-sm font-medium'>
               name@flowbite.com
             </span>
           </Dropdown.Header>
-            <Dropdown.Item >
-              <form onSubmit={handleUpload} action="">
-              <input
-                type='file'
-                id='upload-image'
-                ref={refImage}
-                accept='.jpg,.jpeg,.png'
-                style={{ display: 'none' }}
-              />
-              <label htmlFor='upload-image'>Upload image</label>
-              </form>
-            </Dropdown.Item>
+          <Dropdown.Item >
+            <input
+              onChange={(e: any) => setImage(e.target.files[0])}
+              type='file'
+              id='upload-image'
+              ref={refImage}
+              accept='.jpg,.jpeg,.png'
+              style={{ display: 'none' }}
+            />
+            <label onClick={handleUpload} className='cursor-pointer' htmlFor='upload-image'>Upload image</label>
+          </Dropdown.Item>
           <Dropdown.Item>Sign out</Dropdown.Item>
           <Dropdown.Item>Delete account</Dropdown.Item>
         </Dropdown>
