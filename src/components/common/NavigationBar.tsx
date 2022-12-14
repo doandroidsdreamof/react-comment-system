@@ -1,8 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 // local imports //
-
+import { AuthContext } from '../../context/AuthContext'
 // firebase //
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+  getStorage, ref, uploadBytesResumable, uploadBytes, getDownloadURL, listAll,
+  list,
+} from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 import { getAuth, updateProfile } from "firebase/auth";
 // flowbite //
 import {
@@ -20,35 +24,39 @@ import { injectStyle } from 'react-toastify/dist/inject-style';
 import fallbackImage from '../../assets/images/fallback-image.png';
 
 const NavigationBar = () => {
-  const [image, setImage]: any = useState("");
   const refImage: any = useRef();
   const storage = getStorage();
-  const auth: any = getAuth()
-
+  const [url, setUrl]: any = useState(null);
+  const [imageUpload, setImageUpload]: any | null = useState(null);
+  const [imageUrls, setImageUrls]: any = useState([]);
+  const [render, setRender] = useState<boolean>(false)
 
   useEffect(() => {
-
-
-
-
-
-  }, [])
+    listAll(imagesListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImageUrls((prev: any) => [url]);
+          setUrl(imageUrls)
+          setRender(true)
+        });
+      });
+    });
+  }, [render]);
 
   // set image user profile and upload firebase storage //
-  function handleUpload(e) {
-    e.preventDefault();
+  const imagesListRef = ref(storage, "usersAvatar/");
+  const uploadFile = () => {
     refImage.current.click();
-    const storageRef = ref(storage, `usersAvatar/${image.name}`);
-    updateProfile(auth.currentUser, { photoURL: `${image.name}` })
-      .then(() => {
-
-        console.log("success");
-      }).catch((error) => { console.log(error); });
-
-
-  }
-
-  console.log(image)
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `usersAvatar/${imageUpload.name + uuidv4()}`);
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageUrls((prev: any) => [url]);
+        setUrl(imageUrls)
+        setRender(true)
+      });
+    });
+  };
 
 
 
@@ -64,23 +72,23 @@ const NavigationBar = () => {
         <Dropdown
           arrowIcon={false}
           inline={true}
-          label={<Avatar alt='User settings' img={fallbackImage} rounded={true} />} >
+          label={<Avatar alt='User settings' img={url} rounded={true} />} >
           <Dropdown.Header>
             <span className='block text-sm'>Bonnie Green</span>
             <span className='block truncate text-sm font-medium'>
               name@flowbite.com
             </span>
           </Dropdown.Header>
-          <Dropdown.Item >
+          <Dropdown.Item  >
             <input
-              onChange={(e: any) => setImage(e.target.files[0])}
+              onChange={(e: any) => setImageUpload(e.target.files[0])}
               type='file'
               id='upload-image'
               ref={refImage}
               accept='.jpg,.jpeg,.png'
               style={{ display: 'none' }}
             />
-            <label onClick={handleUpload} className='cursor-pointer' htmlFor='upload-image'>Upload image</label>
+            <button onClick={uploadFile} className='cursor-pointer'>Upload image</button>
           </Dropdown.Item>
           <Dropdown.Item>Sign out</Dropdown.Item>
           <Dropdown.Item>Delete account</Dropdown.Item>
