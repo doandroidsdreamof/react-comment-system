@@ -26,6 +26,8 @@ import fallbackImage from '../../assets/images/fallback-image.png';
 const NavigationBar = () => {
   const refImage: any = useRef();
   const storage = getStorage();
+  const auth: any = getAuth();
+  const user = useContext(AuthContext);
   const [url, setUrl]: any = useState(null);
   const [imageUpload, setImageUpload]: any | null = useState(null);
   const [imageUrls, setImageUrls]: any = useState([]);
@@ -57,7 +59,7 @@ const NavigationBar = () => {
       });
     });
   };
-
+console.log(user)
 
 
   return (
@@ -74,9 +76,9 @@ const NavigationBar = () => {
           inline={true}
           label={<Avatar alt='User settings' img={url} rounded={true} />} >
           <Dropdown.Header>
-            <span className='block text-sm'>Bonnie Green</span>
+            <span className='block text-sm'>{user?.displayName}</span>
             <span className='block truncate text-sm font-medium'>
-              name@flowbite.com
+            {user?.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item  >
