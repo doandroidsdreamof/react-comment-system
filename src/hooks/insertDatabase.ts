@@ -6,6 +6,7 @@ import {
   } from 'firebase/auth';
   import { collection, addDoc } from 'firebase/firestore';
   import { db } from '../firebase';
+  import { v4 as uuidv4 } from "uuid";
 
 const insertDatabase =  function ({datas}: any) {
     try {
@@ -16,7 +17,7 @@ const insertDatabase =  function ({datas}: any) {
         date: new Date().toLocaleString(),
         comments: {
           id: 0,
-          comment: '',
+          comment: [],
           parentId: null,
           createdAt: '',
         },

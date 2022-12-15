@@ -8,7 +8,6 @@ export const AuthContext = React.createContext<AuthContextInterFace | null>(
 
 export const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<AuthContextInterFace | null>(null)
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user: any) => {
       setUser(user)

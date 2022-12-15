@@ -8,6 +8,9 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { getAuth, updateProfile } from "firebase/auth";
+// redux //
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, login, selectUser } from '../../store/reducers/userSlice'
 // flowbite //
 import {
   Navbar,
@@ -29,6 +32,8 @@ const NavigationBar = () => {
   const auth: any = getAuth();
   const user: any = useContext(AuthContext);
   const [url, setUrl]: any = useState(null);
+  const dispatch = useDispatch()
+  const userRedux = useSelector(selectUser);
 
   useEffect(() => {
       // if user already have an avatar download it //
@@ -62,6 +67,14 @@ const NavigationBar = () => {
         console.log("success");
       }).catch((error) => { console.log(error); });
   }
+
+ // logOut and dispatch new state to store //
+  const logOut = () =>{
+    dispatch(logout());
+    auth.signOut()
+  }
+
+
   return (
     <Navbar fluid={true} rounded={true} className=' bg-white rounded-none'>
       <Navbar.Brand>
@@ -95,7 +108,7 @@ const NavigationBar = () => {
             <label className='hidden' htmlFor="upload-image">upload</label>
             <button onClick={openUpload} className='cursor-pointer'>Upload image</button>
           </Dropdown.Item>
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item onClick={logOut}>Sign out</Dropdown.Item>
           <Dropdown.Item>Delete account</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
