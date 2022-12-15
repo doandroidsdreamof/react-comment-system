@@ -22,8 +22,6 @@ function App() {
   const auth = getAuth()
   const userRedux = useSelector(selectUser);
 
-
-
   useEffect(() => {
     onAuthStateChanged(auth, (userAuth) => {
       if (userAuth) {

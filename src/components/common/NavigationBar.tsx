@@ -27,50 +27,53 @@ const NavigationBar = () => {
   const refImage: any = useRef();
   const storage = getStorage();
   const auth: any = getAuth();
-  const user = useContext(AuthContext);
+  const user: any = useContext(AuthContext);
   const [url, setUrl]: any = useState(null);
   const [imageUpload, setImageUpload]: any | null = useState(null);
   const [imageUrls, setImageUrls]: any = useState([]);
   const [render, setRender] = useState<boolean>(false)
 
   useEffect(() => {
-    listAll(imagesListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setImageUrls((prev: any) => [url]);
-          setUrl(imageUrls)
-          setRender(true)
-        });
-      });
-    });
-  }, [render]);
+    // if user already have an avatar download it //
+    if (auth.currentUser.photoURL !== null) {
+      setUrl(user.photoURL);
+    }
+  }, []);
+
+
+  // to trigger file upload without re-render //
+  const openUpload = () => {
+    refImage.current.click();
+  };
 
   // set image user profile and upload firebase storage //
-  const imagesListRef = ref(storage, "usersAvatar/");
-  const uploadFile = () => {
-    refImage.current.click();
-    if (imageUpload == null) return;
-    const imageRef = ref(storage, `usersAvatar/${imageUpload.name + uuidv4()}`);
-    uploadBytes(imageRef, imageUpload).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        setImageUrls((prev: any) => [url]);
-        setUrl(imageUrls)
+  const uploadFile = (file) => {
+    const storageRef = ref(storage, `usersAvatar/${user?.uid}/${file}`);
+    if (file == null) return;
+    uploadBytes(storageRef, file).then(() => {
+      getDownloadURL(storageRef).then((url) => {
+        setUrl(url);
+        updateUserAvatar(url)
         setRender(true)
-      });
-    });
+      })
+    })
   };
-console.log(user)
 
-
+  // upload avatar link with user profile //
+  async function updateUserAvatar(avatar: string) {
+    updateProfile(auth.currentUser, { photoURL: `${avatar}` })
+      .then(() => {
+        console.log("success");
+      }).catch((error) => { console.log(error); });
+  }
   return (
     <Navbar fluid={true} rounded={true} className=' bg-white rounded-none'>
-      <ToastContainer />
       <Navbar.Brand>
         <div className='absolute left-2 whitespace-nowrap text-xl font-semibold text-sky-600'>
           Comments-System
         </div>
       </Navbar.Brand>
-      <div className='flex  md:order-2'>&
+      <div className='flex  md:order-2'>
         <Dropdown
           arrowIcon={false}
           inline={true}
@@ -78,19 +81,23 @@ console.log(user)
           <Dropdown.Header>
             <span className='block text-sm'>{user?.displayName}</span>
             <span className='block truncate text-sm font-medium'>
-            {user?.email}
+              {user?.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item  >
             <input
-              onChange={(e: any) => setImageUpload(e.target.files[0])}
+              onChange={(e: any) => {
+                uploadFile(e.target.files[0])
+
+              }}
               type='file'
               id='upload-image'
               ref={refImage}
               accept='.jpg,.jpeg,.png'
               style={{ display: 'none' }}
             />
-            <button onClick={uploadFile} className='cursor-pointer'>Upload image</button>
+            <label className='hidden' htmlFor="upload-image">upload</label>
+            <button onClick={openUpload} className='cursor-pointer'>Upload image</button>
           </Dropdown.Item>
           <Dropdown.Item>Sign out</Dropdown.Item>
           <Dropdown.Item>Delete account</Dropdown.Item>
