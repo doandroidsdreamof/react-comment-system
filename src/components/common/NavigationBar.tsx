@@ -29,39 +29,35 @@ const NavigationBar = () => {
   const auth: any = getAuth();
   const user: any = useContext(AuthContext);
   const [url, setUrl]: any = useState(null);
-  const [imageUpload, setImageUpload]: any | null = useState(null);
-  const [imageUrls, setImageUrls]: any = useState([]);
-  const [render, setRender] = useState<boolean>(false)
 
   useEffect(() => {
-    // if user already have an avatar download it //
-    if (auth.currentUser.photoURL !== null) {
-      setUrl(user.photoURL);
+      // if user already have an avatar download it //
+    if (auth?.currentUser?.photoURL !== null) {
+      setUrl(auth?.currentUser?.photoURL);
     }
   }, []);
 
 
-  // to trigger file upload without re-render //
+    // to trigger file upload without re-render //
   const openUpload = () => {
     refImage.current.click();
   };
 
   // set image user profile and upload firebase storage //
-  const uploadFile = (file) => {
+  const uploadFile = (file: any) => {
     const storageRef = ref(storage, `usersAvatar/${user?.uid}/${file}`);
     if (file == null) return;
     uploadBytes(storageRef, file).then(() => {
       getDownloadURL(storageRef).then((url) => {
         setUrl(url);
         updateUserAvatar(url)
-        setRender(true)
       })
     })
   };
 
-  // upload avatar link with user profile //
+      // upload avatar link with user profile //
   async function updateUserAvatar(avatar: string) {
-    updateProfile(auth.currentUser, { photoURL: `${avatar}` })
+    updateProfile(auth?.currentUser, { photoURL: `${avatar}` })
       .then(() => {
         console.log("success");
       }).catch((error) => { console.log(error); });
