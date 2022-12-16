@@ -8,12 +8,12 @@ import {
 } from 'firebase/auth';
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase';
-import {UserDatas} from '../../types/interfaces'
+import { UserData } from '../../types/interfaces'
 
 const Comments = () => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
-  const [comments, setComments]: any = useState([])
+  const [data, setData]: any = useState([])
 
   useEffect(() => {
     getComment()
@@ -24,7 +24,7 @@ const Comments = () => {
       const q = query(collection(db, 'users'), where('email', '==', auth?.currentUser?.email))
       const querySnapshot = await getDocs(q)
       querySnapshot.forEach((doc) => {
-        setComments({ id: doc.id, ...doc.data()})
+        setData({ id: doc?.id, ...doc?.data() })
       })
     }
     catch (error) {
@@ -33,14 +33,20 @@ const Comments = () => {
 
   }
 
-  //i4QlzVI6wsde2uLXwiQM
-  console.log("🚀 ~ file: Comments.tsx:28 ~ querySnapshot.forEach ~ doc",  comments)
 
 
 
   return (
     <div className='text-white text-2xl'>
-      comments
+
+      {
+        data.comments?.comment.length > 0
+          ? data.comments?.comment.map((index: any, commentData: any) => (
+            <div key={index}>{commentData}</div>
+          ))
+          : null
+
+      }
     </div>
   )
 }

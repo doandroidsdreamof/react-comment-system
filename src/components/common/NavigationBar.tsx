@@ -64,7 +64,7 @@ const NavigationBar = () => {
   async function updateUserAvatar(avatar: string) {
     updateProfile(auth?.currentUser, { photoURL: `${avatar}` })
       .then(() => {
-        console.log("success");
+        console.log("user avatar is updated");
       }).catch((error) => { console.log(error); });
   }
 

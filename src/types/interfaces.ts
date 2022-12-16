@@ -10,8 +10,8 @@ export interface AuthContextInterFace {
     lastName: string,
     email: string,
     date: string,
+    id: string | number,
     comments: {
-      id: 0,
       comment: [],
       parentId: null | number,
       createdAt: string,
