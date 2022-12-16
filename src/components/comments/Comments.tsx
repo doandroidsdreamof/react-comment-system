@@ -9,6 +9,8 @@ import {
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase';
 import { UserData } from '../../types/interfaces'
+// local imports //
+import Comment from './Comment';
 
 const Comments = () => {
   const user: any = useContext(AuthContext)
@@ -47,6 +49,7 @@ const Comments = () => {
           : null
 
       }
+      <Comment />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
-// local imports //
+// context //
 import { AuthContext } from '../../context/AuthContext'
 // firebase //
 import {
