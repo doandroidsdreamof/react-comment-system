@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth';
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase';
+// interfaces && types //
 import { UserData } from '../../types/interfaces'
 // local imports //
 import Comment from './Comment';
@@ -35,9 +36,6 @@ const Comments = () => {
 
   }
 
-
-
-
   return (
     <div className='text-white text-2xl'>
 
@@ -49,7 +47,7 @@ const Comments = () => {
           : null
 
       }
-      <Comment />
+      <Comment comment={data} />
     </div>
   )
 }
