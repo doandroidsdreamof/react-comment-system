@@ -11,7 +11,7 @@ import { db } from '../../firebase';
 // local imports //
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
-import { modalToogle } from '../../store/reducers/userSlice'
+import { modalToggle, replyToggle } from '../../store/reducers/userSlice'
 
 
 
@@ -20,8 +20,9 @@ const Comments = () => {
   const auth: any = getAuth()
   const [data, setData]: any = useState([])
   const modalRedux = useSelector((state: any) => state.modal.modalSlice)
+  const replayRedux = useSelector((state: any) => state.reply.replySlice)
   const dispatch = useDispatch()
-  console.log(modalRedux.modal)
+  console.log(replayRedux.reply)
 
 
   useEffect(() => {
@@ -43,14 +44,19 @@ const Comments = () => {
   }
 
   function editModalCollapse() {
-    dispatch(modalToogle())
+    dispatch(modalToggle())
+
+  }
+  function replyCollapse() {
+    dispatch(replyToggle())
 
   }
   // ml-6 lg:ml-12  article kısmına cevabın //
 
 
   return (
-    <article className="p-6 mb-6  text-base bg-white rounded-lg  shadow-sm">
+<>
+<article className="p-6 mb-6  text-base bg-white rounded-lg  shadow-sm">
       <footer className="flex justify-between items-center mb-2">
         <div className="  ml-auto  ">
           <button
@@ -91,13 +97,23 @@ const Comments = () => {
         {'metin gelecek'}
       </p>
       <div className="flex items-center mt-4 space-x-4">
-        <button type="button"
+        <button
+          onClick={replyCollapse}
+          type="button"
           className="flex items-center text-sm text-gray-500 hover:underline ">
           <svg aria-hidden="true" className="mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
           Reply
         </button>
       </div>
     </article>
+  
+
+
+
+
+    </>
+
+
 
   )
 }

@@ -21,6 +21,11 @@ import {
 } from 'flowbite-react';
 // interfaces && types //
 import { UserData } from '../../types/interfaces'
+// redux //
+import { useDispatch, useSelector } from 'react-redux'
+import { modalToggle, replyToggle } from '../../store/reducers/userSlice'
+
+
 
 const Comment = () => {
   const user: any = useContext(AuthContext)
@@ -28,13 +33,13 @@ const Comment = () => {
   const storage = getStorage();
   const [avatar, setAvatar] = useState<string>("")
   const date = new Date();
+  const replayRedux = useSelector((state: any) => state.reply.replySlice)
 
 
   useEffect(() => {
     // get and set user avatar //
     if (auth?.currentUser?.photoURL !== null) {
       setAvatar(auth?.currentUser?.photoURL)
-
     }
   }, [])
 
@@ -45,6 +50,18 @@ const Comment = () => {
       <div className="max-w-2xl mx-auto px-4 ">
         <CommentForm />
         <Comments />
+        {
+          replayRedux.reply ?
+            (
+              <CommentForm reply={true} />
+            )
+
+            :
+            (
+              <></>
+            )
+        }
+
       </div>
     </section>
   )
