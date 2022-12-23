@@ -4,6 +4,7 @@ import { auth } from '../firebase';
 import { logout, selectUser } from '../store/reducers/userSlice';
 import NavigationBar from '../components/common/NavigationBar';
 import Comments from '../components/comments/Comments';
+import Comment from '../components/comments/Comment';
 
 
 
@@ -17,7 +18,7 @@ const HomePage = () => {
     <div>
       <NavigationBar />
       <div className='border-2 border-red-900'>
-      <Comments />
+      <Comment />
 
       </div>
 
