@@ -1,20 +1,17 @@
-import React, { FC, useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // context //
 import { AuthContext } from '../../context/AuthContext';
 // firebase //
 import {
-  createUserWithEmailAndPassword,
   getAuth,
 } from 'firebase/auth';
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase';
 // interfaces && types //
-import { UserData } from '../../types/interfaces'
 // local imports //
-import Comment from './Comment';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
-import { modalToogle, selectModal } from '../../store/reducers/userSlice'
+import { modalToogle } from '../../store/reducers/userSlice'
 
 
 
@@ -53,9 +50,9 @@ const Comments = () => {
 
 
   return (
-    <article className="p-6 mb-6  text-base bg-white rounded-lg  shadow-md">
+    <article className="p-6 mb-6  text-base bg-white rounded-lg  shadow-sm">
       <footer className="flex justify-between items-center mb-2">
-        <div className="  border-2  ml-auto  ">
+        <div className="  ml-auto  ">
           <button
             className=" inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 "
             type="button"
@@ -70,7 +67,7 @@ const Comments = () => {
             <span className="sr-only">Comment settings</span>
           </button>
           <div
-            className={modalRedux.modal ? "  absolute z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow " : "hidden "}>
+            className={modalRedux.modal ? 'absolute z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ' : 'hidden'}>
             <ul className="py-1 text-sm text-gray-700 "
               aria-labelledby="dropdownMenuIconHorizontalButton">
               <li>
@@ -91,7 +88,7 @@ const Comments = () => {
 
       </footer>
       <p className="text-gray-500 ">
-      {"metin gelecek"}
+        {'metin gelecek'}
       </p>
       <div className="flex items-center mt-4 space-x-4">
         <button type="button"

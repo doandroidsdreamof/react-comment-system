@@ -15,7 +15,7 @@ const HomePage = () => {
 
 
   return (
-    <div>
+    <div className=''>
       <NavigationBar />
       <div className='border-2 border-red-900'>
       <Comment />
