@@ -48,7 +48,7 @@ const Comment = () => {
   return (
     <section className='bg-gray-50  py-8 lg:py-16'>
       <div className="max-w-2xl mx-auto px-4 ">
-        <CommentForm />
+        <CommentForm reply={false}/>
         <Comments />
         {
           replayRedux.reply ?

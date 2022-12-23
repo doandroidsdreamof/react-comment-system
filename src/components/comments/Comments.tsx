@@ -22,7 +22,6 @@ const Comments = () => {
   const modalRedux = useSelector((state: any) => state.modal.modalSlice)
   const replayRedux = useSelector((state: any) => state.reply.replySlice)
   const dispatch = useDispatch()
-  console.log(replayRedux.reply)
 
 
   useEffect(() => {
@@ -106,7 +105,7 @@ const Comments = () => {
         </button>
       </div>
     </article>
-  
+
 
 
 
