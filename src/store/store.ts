@@ -4,6 +4,8 @@ import reducers from './reducers/userSlice'
 export default configureStore({
     reducer: {
       user: reducers,
+      modal: reducers
+
     },
 
 })

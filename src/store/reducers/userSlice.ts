@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice,combineReducers } from '@reduxjs/toolkit'
 
 export const userSlice = createSlice({
   name: 'user',
@@ -15,6 +15,25 @@ export const userSlice = createSlice({
   },
 })
 
+export const modalSlice = createSlice({
+  name: 'modal',
+  initialState: {
+    modal: false,
+  },
+  reducers: {
+    modalToogle: (state) => {
+      state.modal = !state.modal
+    },
+  },
+})
+
+
+
 export const { login, logout } = userSlice.actions
+export const { modalToogle } = modalSlice.actions
 export const selectUser = (state) => state.user.user
-export default userSlice.reducer
+export const selectModal = (state) => state.modal.modal
+export default combineReducers({
+  userSlice: userSlice.reducer,
+  modalSlice: modalSlice.reducer
+});
