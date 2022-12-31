@@ -57,6 +57,14 @@ const Comments = () => {
 <>
 <article className="p-6 mb-6  text-base bg-white rounded-lg  shadow-sm">
       <footer className="flex justify-between items-center mb-2">
+      <div className="flex items-center">
+                <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
+                        className="mr-2 w-6 h-6 rounded-full"
+                        src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                        alt="Michael Gough"/>Michael Gough</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400"><time
+                        title="February 8th, 2022">Feb. 8, 2022</time></p>
+            </div>
         <div className="  ml-auto  ">
           <button
             className=" inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 "
@@ -90,7 +98,6 @@ const Comments = () => {
             </ul>
           </div>
         </div>
-
       </footer>
       <p className="text-gray-500 ">
         {'metin gelecek'}
@@ -105,6 +112,7 @@ const Comments = () => {
         </button>
       </div>
     </article>
+
 
 
 

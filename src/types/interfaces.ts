@@ -11,9 +11,14 @@ export interface AuthContextInterFace {
     email: string,
     date: string,
     id: string | number,
-    comments: {
-      comment: [],
-      parentId: null | number,
-      createdAt: string,
-    },
+  }
+
+
+  export interface Comments{
+    userID: string,
+    userName: string,
+    createdAt: string,
+    text: string,
+    postID: string,
+    reply: any[],
   }
