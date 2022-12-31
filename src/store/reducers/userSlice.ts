@@ -31,14 +31,14 @@ export const modalSlice = createSlice({
 })
 
 //* replay collapse //
-export const replySlice = createSlice({
-  name: 'reply',
+export const commentSlice = createSlice({
+  name: 'observer',
   initialState: {
-    reply: false,
+    observer: false,
   },
   reducers: {
-    replyToggle: (state) => {
-      state.reply = !state.reply
+    commentObserver: (state) => {
+      state.observer = !state.observer
     },
   },
 })
@@ -48,12 +48,12 @@ export const replySlice = createSlice({
 
 export const { login, logout } = userSlice.actions
 export const { modalToggle } = modalSlice.actions
-export const { replyToggle } = replySlice.actions
+export const { commentObserver } = commentSlice.actions
 export const selectUser = (state) => state.user.user
 export const selectModal = (state) => state.modal.modal
-export const selectReply = (state) => state.reply.reply
+export const selectCommentObserver = (state) => state.observer.observer
 export default combineReducers({
   userSlice: userSlice.reducer,
   modalSlice: modalSlice.reducer,
-  replySlice: replySlice.reducer
+  commentSlice: commentSlice.reducer
 });

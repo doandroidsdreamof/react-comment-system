@@ -1,7 +1,7 @@
 import React, { useState, useReducer,useContext } from 'react'
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
-import { modalToggle, replyToggle } from '../../store/reducers/userSlice'
+import { modalToggle, commentObserver } from '../../store/reducers/userSlice'
 // context //
 import {AuthContext} from '../../context/AuthContext'
 // firebase //
@@ -15,14 +15,16 @@ import {CommentsData} from '../../types/interfaces'
 
 
 const CommentForm = (reply: any) => {
-  const replyRedux = useSelector((state: any) => state.reply.replySlice)
+  const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
   const [commentData,getCommentData] = useState<string>('')
   const user: any = useContext(AuthContext)
   const auth: any = getAuth();
   const date = new Date();
+  const dispatch = useDispatch()
 
   async function setCommentValue(e: Event){
     e.preventDefault()
+    dispatch(commentObserver())
     const docRef = await addDoc(collection(db, "comments"), {
       userName: auth?.currentUser?.displayName,
       createdAt: date.toDateString(),

@@ -3,11 +3,11 @@ import React, { useState, useReducer } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { modalToggle, replyToggle } from '../../store/reducers/userSlice'
 
-const ReplyComment = (open: boolean) => {
-  const replyRedux = useSelector((state: any) => state.reply.replySlice)
-console.log(open)
+const ReplyComment = (open: any) => {
+  const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
   //   onChange={(e: React.ChangeEvent<HTMLInputElement>) => getCommentValue(e.target)}
 
+  
   return (
     <>
       {

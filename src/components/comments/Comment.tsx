@@ -1,30 +1,21 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // context //
 import { AuthContext } from '../../context/AuthContext';
 // local //
 import Comments from './Comments';
 import CommentForm from './CommentForm';
-import ReplyComment from './ReplyComment';
 // firebase //
 import {
-  getStorage, ref, uploadBytesResumable, uploadBytes, getDownloadURL, listAll,
-  list,
-} from "firebase/storage";
-import { getAuth, updateProfile } from "firebase/auth";;
-import { doc, getDoc, getDocs, collection } from 'firebase/firestore'
+  getStorage,
+} from 'firebase/storage';
+import { getAuth } from 'firebase/auth';;
+import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../firebase';
 // flowbite //
-import {
-  Avatar,
-  Textarea,
-  Label,
-  Button,
-} from 'flowbite-react';
+
 // interfaces && types //
-import { UserData } from '../../types/interfaces'
 // redux //
-import { useDispatch, useSelector } from 'react-redux'
-import { modalToggle, replyToggle } from '../../store/reducers/userSlice'
+import { useSelector } from 'react-redux'
 
 
 
@@ -32,9 +23,9 @@ const Comment = () => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth();
   const storage = getStorage();
-  const [avatar, setAvatar] = useState<string>("")
+  const [avatar, setAvatar] = useState<string>('')
   const [userComments, setUserComments] = useState<any>([])
-  const replayRedux = useSelector((state: any) => state.reply.replySlice)
+  const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
   const datas: any[] = []
 
   useEffect(() => {
@@ -43,7 +34,7 @@ const Comment = () => {
       setAvatar(auth?.currentUser?.photoURL)
     }
     getUserComments()
-  }, [])
+  }, [commentObserverRedux])
 
   async function getUserComments() {
     const getData = await getDocs(collection(db, 'comments'))
@@ -61,15 +52,11 @@ const Comment = () => {
         {userComments.length > 0 ?
           (
             userComments.map((items, id) => (
-              <Comments key={id} items={items} />
+              <Comments avatar={avatar} key={id} items={items} />
 
             )
             )
-
-
-
           )
-
           :
           (
             null
