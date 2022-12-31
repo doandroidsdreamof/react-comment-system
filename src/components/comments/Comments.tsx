@@ -21,6 +21,7 @@ const Comments: React.FC<CommentsData>  = ({items,avatar}) => {
   const auth: any = getAuth()
   const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
+  console.log("🚀 ~ file: Comments.tsx:24 ~ removedObserverRedux", removedObserverRedux)
 
   const dispatch = useDispatch()
   const  [open,setOpen] = useState(false)
@@ -28,12 +29,13 @@ const Comments: React.FC<CommentsData>  = ({items,avatar}) => {
 
   useEffect(() => {
 
-  }, [])
 
 
-  const deleteTodo = async (e: any) => {
+  }, [removedObserverRedux])
+
+
+  async function deleteTodo(e: any){
     e.preventDefault()
-    dispatch(removedObserver())
     setModal(false)
     try {
       const q = query(collection(db, 'comments'), where('postID', '==', e?.target?.id))
@@ -44,6 +46,8 @@ const Comments: React.FC<CommentsData>  = ({items,avatar}) => {
           userName: "removed"
         })
       })
+      dispatch(removedObserver())
+
     }
     catch (error) {
       console.error(error)

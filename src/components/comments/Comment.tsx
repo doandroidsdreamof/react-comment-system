@@ -46,7 +46,6 @@ const Comment = () => {
     setUserComments(datas)
   }
 
-  console.log(removedObserverRedux)
 
 
   return (
