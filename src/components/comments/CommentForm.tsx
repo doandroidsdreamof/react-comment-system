@@ -5,7 +5,7 @@ import { commentObserver } from '../../store/reducers/userSlice'
 // context //
 import {AuthContext} from '../../context/AuthContext'
 // firebase //
-import {getDocs,collection,doc,setDoc,getDoc,addDoc,Timestamp} from 'firebase/firestore'
+import {getDocs,collection,doc,setDoc,getDoc,addDoc,Timestamp,updateDoc} from 'firebase/firestore'
 import {getAuth} from 'firebase/auth'
 import {db} from '../../firebase'
 // unique id //
@@ -24,17 +24,26 @@ const CommentForm = (reply: any) => {
   async function setCommentValue(e: Event){
     e.preventDefault()
     dispatch(commentObserver())
-    const docRef = await addDoc(collection(db, "comments"), {
-      userName: auth?.currentUser?.displayName,
-      createdAt: Timestamp.fromDate(new Date()),
-      date: new Date().toDateString(),
-      userID: auth?.currentUser?.uid,
-      text: commentData,
-      postID: uuidv4(),
-      reply: [],
-      photoURL: auth?.currentUser?.photoURL
+    if(e.target.value.length > 0){
+      try{
+        const docRef = await addDoc(collection(db, "commnents"), {
+          userName: auth?.currentUser?.displayName,
+          createdAt: Timestamp.fromDate(new Date()),
+          date: new Date().toDateString(),
+          userID: auth?.currentUser?.uid,
+          text: commentData,
+          postID: uuidv4(),
+          reply: [],
+          photoURL: auth?.currentUser?.photoURL
 
-    });
+        });
+      }
+      catch(error){
+        console.log("🚀 ~ file: CommentForm.tsx:41 ~ setCommentValue ~ err", error)
+        console.error(error)
+
+      }
+    }
 
 
   }

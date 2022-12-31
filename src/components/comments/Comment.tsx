@@ -35,16 +35,16 @@ const Comment = () => {
       setAvatar(auth?.currentUser?.photoURL)
     }
     getUserComments()
-  }, [commentObserverRedux,removedObserverRedux])
+  }, [commentObserverRedux, removedObserverRedux])
 
   async function getUserComments() {
     const getData = await getDocs(collection(db, 'comments'))
     getData.forEach((doc) => {
       datas.push(doc.data())
     })
-    setUserComments(datas)
+    setUserComments([...datas])
   }
-  console.log(userComments)
+
 
 
   return (
@@ -53,8 +53,8 @@ const Comment = () => {
         <CommentForm />
         {userComments.length > 0 ?
           (
-            userComments.map((items, id) => (
-              <Comments  key={id} items={items} />
+            userComments && userComments.map((items, id) => (
+              <Comments key={id} items={items} />
 
             )
             )

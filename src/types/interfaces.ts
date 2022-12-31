@@ -24,3 +24,15 @@ export interface AuthContextInterFace {
     reply: any[],
     photoURL: string
   }
+
+  export interface ReplyCommentsData{
+    userID: string,
+    userName: string,
+    createdAt: any,
+    date: string,
+    text: string,
+    postID: string,
+    photoURL: string,
+    replyComment:boolean
+  }
+

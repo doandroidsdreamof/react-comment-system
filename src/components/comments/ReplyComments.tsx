@@ -5,70 +5,63 @@ import { AuthContext } from '../../context/AuthContext';
 import {
   getAuth,
 } from 'firebase/auth';
-import { collection, getDocs, query, where, deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import { getDocs, collection, doc, setDoc, getDoc, addDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../../firebase';
 // local imports //
 import ReplyCommentForm from './ReplyCommentForm';
-import ReplyComments from './ReplyComments';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
 // interfaces //
-import { CommentsData } from '../../types/interfaces'
+import { CommentsData,ReplyCommentsData } from '../../types/interfaces'
 // image //
 import fallBack from '../../assets/images/fallback-image.jpg'
+// unique id //
+import { v4 as uuidv4 } from "uuid";
 
-const Comments: React.FC<CommentsData> = ({items }) => {
+
+const ReplyComments = () => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
-  const [parentID,setParentID] = useState<string>('')
   const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
-
   const dispatch = useDispatch()
-  const [open, setOpen] = useState(false)
-  const [modal, setModal] = useState(false)
 
   useEffect(() => {
 
 
 
-  }, [removedObserverRedux, items.photoURL])
+  }, [removedObserverRedux])
 
 
-  async function deleteTodo(e: any) {
-    e.preventDefault()
-    setModal(false)
-    try {
-      const q = query(collection(db, 'comments'), where('postID', '==', e?.target?.id))
-      const querySnapshot = await getDocs(q)
-      querySnapshot.forEach((doc) => {
-        updateDoc(doc.ref, {
-          text: "removed",
-          userName: "removed"
-        })
-      })
-      dispatch(removedObserver())
-
-    }
-    catch (error) {
-      console.error(error)
-    }
-
-  }
- function replyComment(e){
-  setOpen(!open)
-  setParentID(e?.target?.id)
- }
 
 
 
   // ml-6 lg:ml-12  article kısmına  //
 
 
+
   return (
     <>
-      <article className={ "p-6 mb-6  text-base bg-white rounded-lg  shadow-sm" }>
+      <article className="p-6 mb-6 text-black  text-base bg-white rounded-lg  shadow-sm">
+        Reply Comments
+      </article>
+
+
+
+    </>
+
+
+
+  )
+}
+
+
+export default ReplyComments
+
+
+
+/*
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
@@ -115,24 +108,16 @@ const Comments: React.FC<CommentsData> = ({items }) => {
         </p>
         <div className={items.userID !== user.uid ? "flex items-center mt-4 space-x-4" : "hidden"}>
           <button
-            id={items?.userID}
-            onClick={(e) => { replyComment(e) }}
+            onClick={() => { setOpen(!open) }}
             type="button"
             className="flex items-center text-sm text-gray-500 hover:underline ">
             <svg aria-hidden="true" className={"mr-1 w-4 h-4"} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
             Reply
           </button>
         </div>
-      </article>
-        <ReplyCommentForm parentID={parentID} open={open} key={items?.postID} />
-        <ReplyComments />
-
-    </>
 
 
 
-  )
-}
 
 
-export default Comments
+        */
