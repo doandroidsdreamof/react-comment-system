@@ -27,7 +27,6 @@ const Comment = () => {
   const [userComments, setUserComments] = useState<any>([])
   const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
-
   const datas: any[] = []
 
   useEffect(() => {
@@ -45,7 +44,7 @@ const Comment = () => {
     })
     setUserComments(datas)
   }
-
+  console.log(userComments)
 
 
   return (
@@ -55,7 +54,7 @@ const Comment = () => {
         {userComments.length > 0 ?
           (
             userComments.map((items, id) => (
-              <Comments avatar={avatar} key={id} items={items} />
+              <Comments  key={id} items={items} />
 
             )
             )

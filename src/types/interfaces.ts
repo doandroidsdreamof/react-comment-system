@@ -22,4 +22,5 @@ export interface AuthContextInterFace {
     text: string,
     postID: string,
     reply: any[],
+    photoURL: string
   }
