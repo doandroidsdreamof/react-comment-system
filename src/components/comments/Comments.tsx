@@ -9,19 +9,22 @@ import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase';
 // interfaces && types //
 // local imports //
+import ReplyComment from './ReplyComment';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
 import { modalToggle, replyToggle } from '../../store/reducers/userSlice'
+// interfaces //
+import {CommentsData} from '../../types/interfaces'
 
 
-
-const Comments = () => {
+const Comments: React.FC<CommentsData>  = ({items}) => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
   const [data, setData]: any = useState([])
   const modalRedux = useSelector((state: any) => state.modal.modalSlice)
   const replayRedux = useSelector((state: any) => state.reply.replySlice)
   const dispatch = useDispatch()
+  const  [open,setOpen] = useState(false)
 
 
   useEffect(() => {
@@ -61,9 +64,9 @@ const Comments = () => {
                 <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
                         className="mr-2 w-6 h-6 rounded-full"
                         src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                        alt="Michael Gough"/>Michael Gough</p>
+                        alt={items?.userName}/>{items?.userName}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400"><time
-                        title="February 8th, 2022">Feb. 8, 2022</time></p>
+                        title="February 8th, 2022">{items?.createdAt}</time></p>
             </div>
         <div className="  ml-auto  ">
           <button
@@ -100,11 +103,11 @@ const Comments = () => {
         </div>
       </footer>
       <p className="text-gray-500 ">
-        {'metin gelecek'}
+        {items?.text}
       </p>
       <div className="flex items-center mt-4 space-x-4">
         <button
-          onClick={replyCollapse}
+          onClick={() => {replyCollapse(); setOpen(!open)}}
           type="button"
           className="flex items-center text-sm text-gray-500 hover:underline ">
           <svg aria-hidden="true" className="mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
@@ -113,8 +116,13 @@ const Comments = () => {
       </div>
     </article>
 
+    {
+
+              <ReplyComment open={open} key={items?.postID} />
 
 
+
+        }
 
 
 

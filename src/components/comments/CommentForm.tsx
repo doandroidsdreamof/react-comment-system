@@ -11,7 +11,7 @@ import {db} from '../../firebase'
 // unique id //
 import { v4 as uuidv4 } from "uuid";
 // interfaces //
-import {Comments} from '../../types/interfaces'
+import {CommentsData} from '../../types/interfaces'
 
 
 const CommentForm = (reply: any) => {

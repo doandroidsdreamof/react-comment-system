@@ -3,16 +3,16 @@ import React, { useState, useReducer } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { modalToggle, replyToggle } from '../../store/reducers/userSlice'
 
-const ReplyComment = (reply: any) => {
+const ReplyComment = (open: boolean) => {
   const replyRedux = useSelector((state: any) => state.reply.replySlice)
-
-//   onChange={(e: React.ChangeEvent<HTMLInputElement>) => getCommentValue(e.target)}
-
+console.log(open)
+  //   onChange={(e: React.ChangeEvent<HTMLInputElement>) => getCommentValue(e.target)}
 
   return (
     <>
       {
-        <form className={" mb-6 bg-white shadow-sm p-2 rounded-md"}>
+        <form className={open?.open ?
+          " mb-6 bg-white shadow-sm p-2 rounded-md" : "hidden"}>
           <div className="py-2 px-4 mb-4  text-black bg-white rounded-lg rounded-t-lg border border-gray-400 ">
             <label htmlFor="comment" className="sr-only z-50">Your comment</label>
             <textarea

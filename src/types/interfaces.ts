@@ -14,7 +14,7 @@ export interface AuthContextInterFace {
   }
 
 
-  export interface Comments{
+  export interface CommentsData{
     userID: string,
     userName: string,
     createdAt: string,

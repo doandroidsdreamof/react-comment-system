@@ -33,8 +33,9 @@ const Comment = () => {
   const auth: any = getAuth();
   const storage = getStorage();
   const [avatar, setAvatar] = useState<string>("")
-  const [userComments,setUserComments] = useState([])
+  const [userComments, setUserComments] = useState<any>([])
   const replayRedux = useSelector((state: any) => state.reply.replySlice)
+  const datas: any[] = []
 
   useEffect(() => {
     // get and set user avatar //
@@ -47,30 +48,35 @@ const Comment = () => {
   async function getUserComments() {
     const getData = await getDocs(collection(db, 'comments'))
     getData.forEach((doc) => {
-       setUserComments(doc.data())
+      datas.push(doc.data())
     })
+    setUserComments(datas)
   }
 
-console.log(userComments)
 
   return (
     <section className='bg-gray-50  py-8 lg:py-16'>
       <div className="max-w-2xl mx-auto px-4 ">
         <CommentForm />
-        <Comments />
-        {
-          replayRedux.reply ?
-            (
-              <ReplyComment />
+        {userComments.length > 0 ?
+          (
+            userComments.map((items, id) => (
+              <Comments key={id} items={items} />
+
             )
-            :
-            (
-              null
             )
 
 
 
+          )
+
+          :
+          (
+            null
+          )
         }
+
+
 
 
 
