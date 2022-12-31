@@ -26,6 +26,8 @@ const Comment = () => {
   const [avatar, setAvatar] = useState<string>('')
   const [userComments, setUserComments] = useState<any>([])
   const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
+  const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
+
   const datas: any[] = []
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Comment = () => {
       setAvatar(auth?.currentUser?.photoURL)
     }
     getUserComments()
-  }, [commentObserverRedux])
+  }, [commentObserverRedux,removedObserverRedux])
 
   async function getUserComments() {
     const getData = await getDocs(collection(db, 'comments'))
@@ -43,6 +45,8 @@ const Comment = () => {
     })
     setUserComments(datas)
   }
+
+  console.log(removedObserverRedux)
 
 
   return (

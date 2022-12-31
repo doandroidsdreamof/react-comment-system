@@ -17,20 +17,8 @@ export const userSlice = createSlice({
   },
 })
 
-//* edit modal collapse (comment components) //
-export const modalSlice = createSlice({
-  name: 'modal',
-  initialState: {
-    modal: false,
-  },
-  reducers: {
-    modalToggle: (state) => {
-      state.modal = !state.modal
-    },
-  },
-})
 
-//* replay collapse //
+//* comments render state //
 export const commentSlice = createSlice({
   name: 'observer',
   initialState: {
@@ -43,17 +31,32 @@ export const commentSlice = createSlice({
   },
 })
 
+//* removed comments render state //
+export const removedSlice = createSlice({
+  name: 'removed',
+  initialState: {
+    removed: false,
+  },
+  reducers: {
+    removedObserver: (state) => {
+      state.removed = !state.removed
+    },
+  },
+})
+
+
 
 
 
 export const { login, logout } = userSlice.actions
-export const { modalToggle } = modalSlice.actions
 export const { commentObserver } = commentSlice.actions
+export const { removedObserver } = removedSlice.actions
 export const selectUser = (state) => state.user.user
-export const selectModal = (state) => state.modal.modal
 export const selectCommentObserver = (state) => state.observer.observer
+export const selectRemovedObserver = (state) => state.removed.removed
 export default combineReducers({
   userSlice: userSlice.reducer,
-  modalSlice: modalSlice.reducer,
-  commentSlice: commentSlice.reducer
+  commentSlice: commentSlice.reducer,
+  removedSlice: removedSlice.reducer
+
 });

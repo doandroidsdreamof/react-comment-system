@@ -5,14 +5,13 @@ import { AuthContext } from '../../context/AuthContext';
 import {
   getAuth,
 } from 'firebase/auth';
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, getDocs, query, where,deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase';
-// interfaces && types //
 // local imports //
 import ReplyComment from './ReplyComment';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
-import { modalToggle, commentObserver } from '../../store/reducers/userSlice'
+import {  commentObserver, removedObserver } from '../../store/reducers/userSlice'
 // interfaces //
 import {CommentsData} from '../../types/interfaces'
 
@@ -20,23 +19,30 @@ import {CommentsData} from '../../types/interfaces'
 const Comments: React.FC<CommentsData>  = ({items,avatar}) => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
-  const [data, setData]: any = useState([])
-  const modalRedux = useSelector((state: any) => state.modal.modalSlice)
   const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
+  const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
+
   const dispatch = useDispatch()
   const  [open,setOpen] = useState(false)
-
+  const  [modal,setModal] = useState(false)
 
   useEffect(() => {
-    getComment()
+
   }, [])
 
-  async function getComment() {
+
+  const deleteTodo = async (e: any) => {
+    e.preventDefault()
+    dispatch(removedObserver())
+    setModal(false)
     try {
-      const q = query(collection(db, 'users'), where('email', '==', auth?.currentUser?.email))
+      const q = query(collection(db, 'comments'), where('postID', '==', e?.target?.id))
       const querySnapshot = await getDocs(q)
       querySnapshot.forEach((doc) => {
-        setData({ id: doc?.id, ...doc?.data() })
+        updateDoc(doc.ref, {
+          text: "removed",
+          userName: "removed"
+        })
       })
     }
     catch (error) {
@@ -45,13 +51,7 @@ const Comments: React.FC<CommentsData>  = ({items,avatar}) => {
 
   }
 
-  function editModalCollapse() {
-    dispatch(modalToggle())
-
-  }
-
-  // ml-6 lg:ml-12  article kısmına cevabın //
-
+  // ml-6 lg:ml-12  article kısmına  //
 
   return (
 <>
@@ -63,13 +63,13 @@ const Comments: React.FC<CommentsData>  = ({items,avatar}) => {
                         src={avatar}
                         alt={items?.userName}/>{items?.userName}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400"><time
-                        title="February 8th, 2022">{items?.createdAt}</time></p>
+                        title="February 8th, 2022">{items?.date}</time></p>
             </div>
         <div className="  ml-auto  ">
           <button
             className=" inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 "
             type="button"
-            onClick={editModalCollapse}
+            onClick={() => setModal(!modal)}
           >
             <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg">
@@ -80,20 +80,18 @@ const Comments: React.FC<CommentsData>  = ({items,avatar}) => {
             <span className="sr-only">Comment settings</span>
           </button>
           <div
-            className={modalRedux.modal ? 'absolute z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ' : 'hidden'}>
+            className={modal ? 'absolute z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ' : 'hidden'}>
             <ul className="py-1 text-sm text-gray-700 "
               aria-labelledby="dropdownMenuIconHorizontalButton">
               <li>
-                <a
-                  className="block py-2 px-4 hover:bg-gray-100  cursor-pointer">Edit</a>
+                <button
+                  className="block py-2 px-4 hover:bg-gray-100  cursor-pointer">Edit</button>
               </li>
               <li>
-                <a
-                  className="block py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</a>
-              </li>
-              <li>
-                <a
-                  className="block py-2 px-4 hover:bg-gray-100 cursor-pointer">Report</a>
+                <button
+                  id={items?.postID}
+                  onClick={(e) => deleteTodo(e)}
+                  className="block py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</button>
               </li>
             </ul>
           </div>
