@@ -9,7 +9,7 @@ import { collection, query, where, deleteDoc, getDocs, doc, updateDoc } from 'fi
 import { db } from '../../firebase';
 // local imports //
 import ReplyCommentForm from './ReplyCommentForm';
-import removeComment from '../../hooks/removeComment';
+import removeReplyComment from '../../hooks/removeReplyComment';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
@@ -35,7 +35,17 @@ const ReplyComments = ({ replyComments }: any) => {
   }, [])
 
 
+  async function deleteTodo(e: any) {
+    e.preventDefault()
+    const postID = e?.target?.id;
+    setModal(false)
+    removeReplyComment(postID)
+    setTimeout(() =>{
+      dispatch(removedObserver())
+    },1000)
 
+
+  }
 
 
   return (
@@ -72,13 +82,13 @@ const ReplyComments = ({ replyComments }: any) => {
                 aria-labelledby="dropdownMenuIconHorizontalButton">
                 <li>
                   <button
-                    className="block py-2 px-4 hover:bg-gray-100  cursor-pointer">Edit</button>
+                    className="block z-50 w-full text-left py-2 px-4 hover:bg-gray-100  cursor-pointer">Edit</button>
                 </li>
                 <li>
                   <button
-                    id={replyComments?.postID}
+                    id={replyComments?.parentPostID}
                     onClick={(e) => deleteTodo(e)}
-                    className="block py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</button>
+                    className="block z-50 w-full text-left py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</button>
                 </li>
               </ul>
             </div>

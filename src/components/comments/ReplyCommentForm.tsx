@@ -43,7 +43,8 @@ const ReplyCommentForm = (open: any, parentID: any) => {
             postID: uuidv4(),
             nested: true,
             photoURL: auth?.currentUser?.photoURL,
-            email:user?.email
+            email:user?.email,
+            parentPostID: open?.ID
 
           })
 
