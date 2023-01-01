@@ -28,7 +28,6 @@ const Comment = () => {
   const [userComments, setUserComments] = useState<any>([])
   const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
-  const datas: any[] = []
 
   useEffect(() => {
     // get and set user avatar //
@@ -39,6 +38,8 @@ const Comment = () => {
   }, [commentObserverRedux, removedObserverRedux])
 
   async function getUserComments() {
+    const datas: any[] = []
+
     const getData = await getDocs(collection(db, 'comments'))
     getData.forEach((doc) => {
       datas.push(doc.data())
@@ -50,13 +51,17 @@ const Comment = () => {
 
   return (
     <section className='bg-gray-50  py-8 lg:py-16'>
-      <div className="max-w-2xl mx-auto px-4 ">
+      <div className="max-w-2xl mx-auto px-4">
         <CommentForm />
         {userComments.length > 0 ?
           (
             userComments && userComments.map((items, id) =>(
+             <>
 
-              <Comments key={id} items={items} />
+                <Comments  items={items} />
+     
+
+             </>
             )
 
 

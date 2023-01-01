@@ -43,7 +43,7 @@ const ReplyComments = ({ replyComments }: any) => {
   return (
 
     <>
-      <article key={replyComments} className="p-6 mb-6 ml-6 lg:ml-12 bg-violet-400   text-black  text-base bg-white rounded-lg  shadow-sm">
+      <article key={replyComments} className="p-6 mb-3 ml-6 lg:ml-12    text-black  text-base bg-white rounded-lg  shadow-sm">
 
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">

@@ -17,7 +17,7 @@ import { CommentsData, ReplyCommentsData } from '../../types/interfaces'
 import fallBack from '../../assets/images/fallback-image.jpg'
 // unique id //
 import { v4 as uuidv4 } from "uuid";
-import { set } from 'immer/dist/internal';
+
 
 const ReplyCommentForm = (open: any, parentID: any) => {
   const [commentsData, setCommentsData] = useState<string>('')
@@ -28,7 +28,6 @@ const ReplyCommentForm = (open: any, parentID: any) => {
 
   async function setReplyComments(e: Event) {
     e.preventDefault()
-    dispatch(commentObserver())
     if (commentsData.length > 0) {
     try {
       const q = query(collection(db, 'comments'), where('postID', '==', open?.ID))
@@ -50,6 +49,8 @@ const ReplyCommentForm = (open: any, parentID: any) => {
 
         })
       })
+          dispatch(commentObserver())
+
       setCommentsData('')
 
     }

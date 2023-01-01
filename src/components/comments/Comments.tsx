@@ -18,7 +18,7 @@ import { CommentsData } from '../../types/interfaces'
 // image //
 import fallBack from '../../assets/images/fallback-image.jpg'
 
-const Comments: React.FC<CommentsData> = ({items }) => {
+const Comments: React.FC<CommentsData> = ({items }: any) => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
   const [parentID,setParentID] = useState<string>('')
@@ -31,7 +31,6 @@ const Comments: React.FC<CommentsData> = ({items }) => {
 
 
   useEffect(() => {
-
 
 
 
@@ -69,7 +68,7 @@ const Comments: React.FC<CommentsData> = ({items }) => {
 
   return (
     <>
-      <article className={ "p-6 mb-6   text-base bg-white rounded-lg  shadow-sm" }>
+      <article className={ "p-6 mb-6    text-base bg-white rounded-lg  shadow-md" }>
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
