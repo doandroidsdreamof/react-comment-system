@@ -65,7 +65,6 @@ const Comments: React.FC<CommentsData> = ({items }) => {
   // ml-6 lg:ml-12  article kısmına  //
 
 
-
   return (
     <>
       <article className={ "p-6 mb-6  text-base bg-white rounded-lg  shadow-sm" }>

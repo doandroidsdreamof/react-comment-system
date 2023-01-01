@@ -34,7 +34,8 @@ const CommentForm = (reply: any) => {
           text: commentData,
           postID: uuidv4(),
           reply: [],
-          photoURL: auth?.currentUser?.photoURL
+          photoURL: auth?.currentUser?.photoURL,
+          email:user?.email
 
         });
         updateAvatar()
@@ -51,7 +52,7 @@ const CommentForm = (reply: any) => {
 
 
   async function updateAvatar() {
-    const q = query(collection(db, 'users'), where('email', '==', user?.email))
+    const q = query(collection(db, 'comments'), where('email', '==', user?.email))
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, {
