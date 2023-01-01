@@ -22,7 +22,7 @@ const Comments: React.FC<CommentsData> = ({items }) => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
   const [parentID,setParentID] = useState<string>('')
-  const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
+  const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
@@ -35,7 +35,7 @@ const Comments: React.FC<CommentsData> = ({items }) => {
 
 
 
-  }, [removedObserverRedux])
+  }, [])
 
 
   async function deleteTodo(e: any) {
@@ -63,25 +63,13 @@ const Comments: React.FC<CommentsData> = ({items }) => {
   setParentID(e?.target?.id)
  }
 
- async function getReplyComments() {
-  const replyParse: any[] = []
 
-  const getData = await getDocs(collection(db, 'comments'))
-  getData.forEach((doc) => {
-    if (doc.data().reply.length > 0) {
-      replyParse.push(...doc.data().reply)
-    }
-
-  })
-
-  setReplyComments(replyParse)
-}
 
 
 
   return (
     <>
-      <article className={ "p-6 mb-6  text-base bg-white rounded-lg  shadow-sm" }>
+      <article className={ "p-6 mb-6   text-base bg-white rounded-lg  shadow-sm" }>
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
@@ -138,7 +126,11 @@ const Comments: React.FC<CommentsData> = ({items }) => {
         </div>
       </article>
         <ReplyCommentForm ID={parentID} open={open} key={items?.postID} />
-        <ReplyComments />
+      {
+        items.reply.map((data,index) =>(
+          <ReplyComments replyComments={data} key={index} />
+        ))
+      }
 
     </>
 

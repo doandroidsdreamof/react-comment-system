@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 // local //
 import Comments from './Comments';
 import CommentForm from './CommentForm';
+import ReplyComments from './ReplyComments';
 // firebase //
 import {
   getStorage,
@@ -53,10 +54,18 @@ const Comment = () => {
         <CommentForm />
         {userComments.length > 0 ?
           (
-            userComments && userComments.map((items, id) => (
-              <Comments key={id} items={items} />
+            userComments && userComments.map((items, id) =>(
 
+              <Comments key={id} items={items} />
             )
+
+
+
+
+
+
+
+
             )
           )
           :
@@ -64,7 +73,6 @@ const Comment = () => {
             null
           )
         }
-
 
 
 

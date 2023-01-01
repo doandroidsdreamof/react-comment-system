@@ -29,6 +29,7 @@ const ReplyCommentForm = (open: any, parentID: any) => {
   async function setReplyComments(e: Event) {
     e.preventDefault()
     dispatch(commentObserver())
+    if (commentsData.length > 0) {
     try {
       const q = query(collection(db, 'comments'), where('postID', '==', open?.ID))
       const querySnapshot = await getDocs(q)
@@ -55,6 +56,7 @@ const ReplyCommentForm = (open: any, parentID: any) => {
     catch (error) {
       console.error(error)
     }
+  }
   }
 
 

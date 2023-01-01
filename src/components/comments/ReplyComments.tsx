@@ -20,32 +20,17 @@ import fallBack from '../../assets/images/fallback-image.jpg'
 import { v4 as uuidv4 } from "uuid";
 
 
-const ReplyComments = () => {
+const ReplyComments = ({ replyComments }: any) => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
-  const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
+  const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
   const dispatch = useDispatch()
-  const [replyComments, setReplyComments] = useState<any>([])
 
   useEffect(() => {
 
-    getReplyComments()
-  }, [removedObserverRedux,commentObserverRedux])
 
-  async function getReplyComments() {
-    const replyParse: any[] = []
-
-    const getData = await getDocs(collection(db, 'comments'))
-    getData.forEach((doc) => {
-      if (doc.data().reply.length > 0) {
-        replyParse.push(...doc.data().reply)
-      }
-
-    })
-
-    setReplyComments(replyParse)
-  }
+  }, [])
 
 
 
@@ -56,69 +41,60 @@ const ReplyComments = () => {
 
 
   return (
+
     <>
-      {replyComments.map((items: any, index: any) => (
+      <article key={replyComments} className="p-6 mb-6 ml-6 lg:ml-12 bg-violet-400   text-black  text-base bg-white rounded-lg  shadow-sm">
 
-<>
-<article className="p-6 mb-6 ml-6 lg:ml-12   text-black  text-base bg-white rounded-lg  shadow-sm">
+        <footer className="flex justify-between items-center mb-2">
+          <div className="flex items-center">
+            <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
+              className="mr-2 w-6 h-6 rounded-full"
+              src={replyComments.photoURL ? replyComments.photoURL : fallBack}
+              alt={replyComments?.userName} />{replyComments?.userName}</p>
+            <p className="text-xs text-gray-600 "><time
+              title="date">{replyComments?.date}</time></p>
+          </div>
+          <div className="  ml-auto  ">
+            <button
+              className={" inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 "}
+              type="button"
+            >
+              <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
+                </path>
+              </svg>
+              <span className="sr-only">Comment settings</span>
+            </button>
+            <div
+              className={'absolute hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow '}>
+              <ul className="py-1 text-sm text-gray-700 "
+                aria-labelledby="dropdownMenuIconHorizontalButton">
+                <li>
+                  <button
+                    className="block py-2 px-4 hover:bg-gray-100  cursor-pointer">Edit</button>
+                </li>
+                <li>
+                  <button
+                    className="block py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </footer>
+        <p className="text-gray-500 ">
+          {replyComments.text}
+        </p>
 
-<footer className="flex justify-between items-center mb-2">
-  <div className="flex items-center">
-    <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
-      className="mr-2 w-6 h-6 rounded-full"
-      src={items.photoURL ? items.photoURL : fallBack}
-      alt={items?.userName} />{items?.userName}</p>
-    <p className="text-xs text-gray-600 "><time
-      title="date">{items?.date}</time></p>
-  </div>
-  <div className="  ml-auto  ">
-    <button
-      className={ " inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 "}
-      type="button"
-    >
-      <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
-        </path>
-      </svg>
-      <span className="sr-only">Comment settings</span>
-    </button>
-    <div
-      className={'absolute hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow '}>
-      <ul className="py-1 text-sm text-gray-700 "
-        aria-labelledby="dropdownMenuIconHorizontalButton">
-        <li>
-          <button
-            className="block py-2 px-4 hover:bg-gray-100  cursor-pointer">Edit</button>
-        </li>
-        <li>
-          <button
-            className="block py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</footer>
-<p className="text-gray-500 ">
-  {items.text}
-</p>
-
-</article>
-</>
-
-))}
-
-
+      </article>
     </>
-
-
 
   )
 }
 
 
-export default ReplyComments
+export default ReplyComments;
 
 
 
