@@ -33,13 +33,13 @@ const Comment = () => {
     // get and set user avatar //
     if (auth?.currentUser?.photoURL !== null) {
       setAvatar(auth?.currentUser?.photoURL)
+
     }
     getUserComments()
-  }, [commentObserverRedux, removedObserverRedux])
+  }, [commentObserverRedux,removedObserverRedux])
 
   async function getUserComments() {
     const datas: any[] = []
-
     const getData = await getDocs(collection(db, 'comments'))
     getData.forEach((doc) => {
       datas.push(doc.data())
@@ -58,8 +58,8 @@ const Comment = () => {
             userComments && userComments.map((items, id) =>(
              <>
 
-                <Comments  items={items} />
-     
+                <Comments key={id}  items={items} />
+
 
              </>
             )

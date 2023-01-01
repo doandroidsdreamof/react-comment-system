@@ -10,6 +10,7 @@ import { db } from '../../firebase';
 // local imports //
 import ReplyCommentForm from './ReplyCommentForm';
 import ReplyComments from './ReplyComments';
+import removeComment from '../../hooks/removeComment';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
@@ -17,6 +18,7 @@ import { commentObserver, removedObserver } from '../../store/reducers/userSlice
 import { CommentsData } from '../../types/interfaces'
 // image //
 import fallBack from '../../assets/images/fallback-image.jpg'
+
 
 const Comments: React.FC<CommentsData> = ({items }: any) => {
   const user: any = useContext(AuthContext)
@@ -27,34 +29,24 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(false)
+  const [render, setRender] = useState(false)
   const [replyComments, setReplyComments] = useState<any>([])
 
 
-  useEffect(() => {
+
+ useEffect(() =>{
 
 
-
-  }, [])
-
+ },[])
 
   async function deleteTodo(e: any) {
     e.preventDefault()
     setModal(false)
-    try {
-      const q = query(collection(db, 'comments'), where('postID', '==', e?.target?.id))
-      const querySnapshot = await getDocs(q)
-      querySnapshot.forEach((doc) => {
-        updateDoc(doc.ref, {
-          text: "removed",
-          userName: "removed"
-        })
-      })
+    removeComment(e)
+    setTimeout(() =>{
       dispatch(removedObserver())
+    },1000)
 
-    }
-    catch (error) {
-      console.error(error)
-    }
 
   }
  function replyComment(e){
@@ -98,13 +90,13 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
                 aria-labelledby="dropdownMenuIconHorizontalButton">
                 <li>
                   <button
-                    className="block py-2 px-4 hover:bg-gray-100  cursor-pointer">Edit</button>
+                    className="block py-2 px-4 w-full text-left hover:bg-gray-100  cursor-pointer">Edit</button>
                 </li>
                 <li>
                   <button
                     id={items?.postID}
                     onClick={(e) => deleteTodo(e)}
-                    className="block py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</button>
+                    className="block py-2 z-50 px-4 hover:bg-gray-100  w-full text-left  cursor-pointer ">Remove</button>
                 </li>
               </ul>
             </div>

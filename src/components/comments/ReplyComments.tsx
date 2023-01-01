@@ -9,6 +9,7 @@ import { collection, query, where, deleteDoc, getDocs, doc, updateDoc } from 'fi
 import { db } from '../../firebase';
 // local imports //
 import ReplyCommentForm from './ReplyCommentForm';
+import removeComment from '../../hooks/removeComment';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
@@ -37,9 +38,6 @@ const ReplyComments = ({ replyComments }: any) => {
 
 
 
-
-
-
   return (
 
     <>
@@ -56,9 +54,9 @@ const ReplyComments = ({ replyComments }: any) => {
           </div>
           <div className="  ml-auto  ">
             <button
-             className={replyComments.userID === user.uid ? " inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 " : "hidden"}
-             type="button"
-             onClick={() => setModal(!modal)}
+              className={replyComments.userID === user.uid ? " inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 " : "hidden"}
+              type="button"
+              onClick={() => setModal(!modal)}
             >
               <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
@@ -78,6 +76,8 @@ const ReplyComments = ({ replyComments }: any) => {
                 </li>
                 <li>
                   <button
+                    id={replyComments?.postID}
+                    onClick={(e) => deleteTodo(e)}
                     className="block py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</button>
                 </li>
               </ul>
