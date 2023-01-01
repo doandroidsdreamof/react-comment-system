@@ -23,9 +23,12 @@ const ReplyCommentForm = (open: any, parentID: any) => {
   const [commentsData, setCommentsData] = useState<string>('')
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
+  const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
+  const dispatch = useDispatch()
 
   async function setReplyComments(e: Event) {
     e.preventDefault()
+    dispatch(commentObserver())
     try {
       const q = query(collection(db, 'comments'), where('postID', '==', open?.ID))
       const querySnapshot = await getDocs(q)
@@ -53,7 +56,7 @@ const ReplyCommentForm = (open: any, parentID: any) => {
       console.error(error)
     }
   }
-console.log(open.ID)
+
 
   return (
     <>

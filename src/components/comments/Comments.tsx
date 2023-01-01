@@ -27,6 +27,8 @@ const Comments: React.FC<CommentsData> = ({items }) => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(false)
+  const [replyComments, setReplyComments] = useState<any>([])
+
 
   useEffect(() => {
 
@@ -61,6 +63,19 @@ const Comments: React.FC<CommentsData> = ({items }) => {
   setParentID(e?.target?.id)
  }
 
+ async function getReplyComments() {
+  const replyParse: any[] = []
+
+  const getData = await getDocs(collection(db, 'comments'))
+  getData.forEach((doc) => {
+    if (doc.data().reply.length > 0) {
+      replyParse.push(...doc.data().reply)
+    }
+
+  })
+
+  setReplyComments(replyParse)
+}
 
 
 
