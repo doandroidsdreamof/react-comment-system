@@ -15,6 +15,7 @@ const insertDatabase =  function ({datas}: any) {
         lastName: datas?.lastName,
         email: datas?.email,
         date: new Date().toLocaleString(),
+        photoURL: null,
         comments: {
           id: 0,
           comment: [],

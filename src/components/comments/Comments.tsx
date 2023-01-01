@@ -24,7 +24,6 @@ const Comments: React.FC<CommentsData> = ({items }) => {
   const [parentID,setParentID] = useState<string>('')
   const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
-
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(false)
@@ -33,7 +32,8 @@ const Comments: React.FC<CommentsData> = ({items }) => {
 
 
 
-  }, [removedObserverRedux, items.photoURL])
+
+  }, [removedObserverRedux])
 
 
   async function deleteTodo(e: any) {
@@ -62,8 +62,8 @@ const Comments: React.FC<CommentsData> = ({items }) => {
  }
 
 
-
   // ml-6 lg:ml-12  article kısmına  //
+
 
 
   return (
@@ -73,7 +73,7 @@ const Comments: React.FC<CommentsData> = ({items }) => {
           <div className="flex items-center">
             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
               className="mr-2 w-6 h-6 rounded-full"
-              src={items.photoURL ? items.photoURL : fallBack}
+              src={items.photoURL === null ? fallBack : items.photoURL}
               alt={items?.userName} />{items?.userName}</p>
             <p className="text-xs text-gray-600 "><time
               title="date">{items?.date}</time></p>
