@@ -26,6 +26,7 @@ const ReplyComments = ({ replyComments }: any) => {
   const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
   const dispatch = useDispatch()
+  const [modal, setModal] = useState(false)
 
   useEffect(() => {
 
@@ -36,7 +37,6 @@ const ReplyComments = ({ replyComments }: any) => {
 
 
 
-  // ml-6 lg:ml-12  article kısmına  //
 
 
 
@@ -56,8 +56,9 @@ const ReplyComments = ({ replyComments }: any) => {
           </div>
           <div className="  ml-auto  ">
             <button
-              className={" inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 "}
-              type="button"
+             className={replyComments.userID === user.uid ? " inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 " : "hidden"}
+             type="button"
+             onClick={() => setModal(!modal)}
             >
               <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
@@ -68,7 +69,7 @@ const ReplyComments = ({ replyComments }: any) => {
               <span className="sr-only">Comment settings</span>
             </button>
             <div
-              className={'absolute hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow '}>
+              className={modal ? 'absolute  z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ' : 'hidden'}>
               <ul className="py-1 text-sm text-gray-700 "
                 aria-labelledby="dropdownMenuIconHorizontalButton">
                 <li>

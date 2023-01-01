@@ -68,7 +68,7 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
 
   return (
     <>
-      <article className={ "p-6 mb-6    text-base bg-white rounded-lg  shadow-md" }>
+      <article className={ "p-6 mb-6    text-base bg-white rounded-lg  shadow-sm" }>
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
@@ -113,7 +113,7 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
         <p className="text-gray-500 ">
           {items?.text}
         </p>
-        <div className={items.userID !== user.uid ? "flex items-center mt-4 space-x-4" : "hidden"}>
+        <div className={ "flex items-center mt-4 space-x-4"}>
           <button
             id={items?.postID}
             onClick={(e) => { replyComment(e) }}

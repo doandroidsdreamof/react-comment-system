@@ -76,9 +76,9 @@ const NavigationBar = () => {
 
 
   return (
-    <Navbar fluid={true} rounded={true} className=' bg-white rounded-none shadow-md'>
+    <Navbar fluid={true} rounded={true} className=' bg-white rounded-none border-b-0 md:border-b-2'>
       <Navbar.Brand>
-        <div className='absolute left-2 whitespace-nowrap text-xl font-semibold text-sky-600'>
+        <div className='absolute left-2 whitespace-nowrap text-xl  font-semibold text-sky-600'>
           Comments-System
         </div>
       </Navbar.Brand>
