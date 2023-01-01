@@ -43,7 +43,6 @@ const CommentForm = (reply: any) => {
 
       }
       catch (error) {
-        console.log("🚀 ~ file: CommentForm.tsx:41 ~ setCommentValue ~ err", error)
         console.error(error)
 
       }

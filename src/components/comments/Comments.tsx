@@ -62,7 +62,6 @@ const Comments: React.FC<CommentsData> = ({items }) => {
  }
 
 
-  // ml-6 lg:ml-12  article kısmına  //
 
 
   return (
@@ -114,7 +113,7 @@ const Comments: React.FC<CommentsData> = ({items }) => {
         </p>
         <div className={items.userID !== user.uid ? "flex items-center mt-4 space-x-4" : "hidden"}>
           <button
-            id={items?.userID}
+            id={items?.postID}
             onClick={(e) => { replyComment(e) }}
             type="button"
             className="flex items-center text-sm text-gray-500 hover:underline ">
@@ -123,7 +122,7 @@ const Comments: React.FC<CommentsData> = ({items }) => {
           </button>
         </div>
       </article>
-        <ReplyCommentForm parentID={parentID} open={open} key={items?.postID} />
+        <ReplyCommentForm ID={parentID} open={open} key={items?.postID} />
         <ReplyComments />
 
     </>
