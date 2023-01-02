@@ -46,15 +46,12 @@ const ReplyCommentForm = (open: any, parentID: any) => {
               photoURL: auth?.currentUser?.photoURL,
               email: user?.email,
               parentPostID: open?.ID
-
             })
-
           })
         })
         setTimeout(() => {
           dispatch(commentObserver())
         }, 100)
-
         setCommentsData('')
         //* after submit close form //
         open.open()

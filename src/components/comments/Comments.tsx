@@ -55,9 +55,6 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
  }
 
 
-
-
-
   return (
     <>
       <article className={ "p-6 mb-6    text-base bg-white rounded-lg  shadow-sm" }>
@@ -105,7 +102,7 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
         <p className="text-gray-500 ">
           {items?.text}
         </p>
-        <div className={ "flex items-center mt-4 space-x-4"}>
+        <div className={items?.text && items?.userName === 'removed' ? 'hidden' : "flex items-center mt-4 space-x-4"}>
           <button
             id={items?.postID}
             onClick={(e) => { replyComment(e) }}

@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-const EditForm = ({text}) => {
+const EditForm = ({text,close,toggle}) => {
     const editModalRedux = useSelector((state: any) => state.edit.editModalSlice.edit)
     const closeModalRedux = useSelector((state: any) => state.modal.closeModalSlice.modal)
 
@@ -32,22 +32,22 @@ const EditForm = ({text}) => {
 
     const cancelEdit = async () =>{
         dispatch(editToggle())
-
+        toggle()
     }
 
     return (
-
         <>
             {/* edit comment section */}
-            <div className={editModalRedux ? "block" : "hidden"}>
-                <div className={"py-2 px-4 mb-4  text-black bg-white rounded-lg rounded-t-lg border border-gray-400 "}>
+            <div className={close ? "block " : "hidden"}>
+                <div className={"p-6 mb-3 ml-6 lg:ml-12  text-black bg-white rounded-lg rounded-t-lg border border-gray-400 "}>
                     <label htmlFor="comment" className="sr-only z-50">Your comment</label>
                     <textarea
-                        value={text.text}
+                        value={text}
                         className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none "
                         required></textarea>
 
                 </div>
+                <div className='ml-6 lg:ml-12'>
                 <button
                     className="inline-flex mr-2 items-center py-1.5 mb-4 px-5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800">
                     {"post"}
@@ -57,6 +57,8 @@ const EditForm = ({text}) => {
                     className="inline-flex items-center py-1.5 mb-4 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800">
                     {"cancel"}
                 </button>
+                </div>
+
             </div>
             {/* edit comment section  end */}
 
