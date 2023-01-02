@@ -37,13 +37,12 @@ const ReplyComments = ({ replyComments }: any) => {
 
   async function deleteTodo(e: any) {
     e.preventDefault()
-    const postID = e?.target?.id;
+     const id = e?.target?.id;
     setModal(false)
-    removeReplyComment(postID)
+    removeReplyComment({replyComments})
     setTimeout(() =>{
       dispatch(removedObserver())
     },1000)
-
 
   }
 

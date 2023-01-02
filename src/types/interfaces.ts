@@ -29,10 +29,13 @@ export interface AuthContextInterFace {
     userID: string,
     userName: string,
     createdAt: any,
+    email: string,
     date: string,
     text: string,
     postID: string,
     photoURL: string,
-    replyComment:boolean
+    replyComment:boolean,
+    parentPostID?:string,
+    nested:boolean
   }
 
