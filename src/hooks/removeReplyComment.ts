@@ -24,7 +24,7 @@ async function removeReplyComment(datas: any) {
     nested:datas.replyComments.nested
   }
   try {
-    const q = query(collection(db, 'comments'), where('postID', '==', datas.replyComments.parentPostID))
+    const q = query(collection(db, 'comments'), where('postID', '==', datas.replyComments.parentPostID ))
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, {
