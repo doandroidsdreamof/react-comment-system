@@ -5,7 +5,9 @@ export default configureStore({
     reducer: {
       user: reducers,
       observer: reducers,
-      removed: reducers
+      removed: reducers,
+      edit:reducers,
+      modal:reducers
 
     },
 

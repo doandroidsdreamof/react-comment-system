@@ -3,11 +3,11 @@ import React, { useState, useReducer, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
 // firebase //
-import  firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import {
   getAuth,
 } from 'firebase/auth';
-import { getDocs, collection, doc, setDoc, getDoc, addDoc,FieldValue, Timestamp,where,query, updateDoc, arrayUnion } from 'firebase/firestore'
+import { getDocs, collection, doc, setDoc, getDoc, addDoc, FieldValue, Timestamp, where, query, updateDoc, arrayUnion } from 'firebase/firestore'
 import { db } from '../../firebase';
 // context //
 import { AuthContext } from '../../context/AuthContext';
@@ -29,43 +29,48 @@ const ReplyCommentForm = (open: any, parentID: any) => {
   async function setReplyComments(e: Event) {
     e.preventDefault()
     if (commentsData.length > 0) {
-    try {
-      const q = query(collection(db, 'comments'), where('postID', '==', open?.ID))
-      const querySnapshot = await getDocs(q)
-      querySnapshot.forEach((doc) => {
-        updateDoc(doc.ref, {
-          reply: arrayUnion({
-            userName: auth?.currentUser?.displayName,
-            createdAt: Timestamp.fromDate(new Date()),
-            date: new Date().toDateString(),
-            userID: auth?.currentUser?.uid,
-            text: commentsData,
-            postID: uuidv4(),
-            nested: true,
-            photoURL: auth?.currentUser?.photoURL,
-            email:user?.email,
-            parentPostID: open?.ID
+      try {
+        //* update database //
+        const q = query(collection(db, 'comments'), where('postID', '==', open?.ID))
+        const querySnapshot = await getDocs(q)
+        querySnapshot.forEach((doc) => {
+          updateDoc(doc.ref, {
+            reply: arrayUnion({
+              userName: auth?.currentUser?.displayName,
+              createdAt: Timestamp.fromDate(new Date()),
+              date: new Date().toDateString(),
+              userID: auth?.currentUser?.uid,
+              text: commentsData,
+              postID: uuidv4(),
+              nested: true,
+              photoURL: auth?.currentUser?.photoURL,
+              email: user?.email,
+              parentPostID: open?.ID
+
+            })
 
           })
-
         })
-      })
+        setTimeout(() => {
           dispatch(commentObserver())
+        }, 100)
 
-      setCommentsData('')
+        setCommentsData('')
+        //* after submit close form //
+        open.open()
 
+      }
+      catch (error) {
+        console.error(error)
+      }
     }
-    catch (error) {
-      console.error(error)
-    }
-  }
   }
 
 
   return (
     <>
       {
-        <form className={open?.open ?
+        <form className={open?.close ?
           " mb-6 bg-white shadow-sm p-2 rounded-md" : "hidden"}>
           <div className="py-2 px-4 mb-4  text-black bg-white rounded-lg rounded-t-lg border border-gray-400 ">
             <label htmlFor="comment" className="sr-only z-50">Your comment</label>
