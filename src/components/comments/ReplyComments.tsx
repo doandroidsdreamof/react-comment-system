@@ -57,18 +57,14 @@ const ReplyComments = ({ replyComments }: any) => {
       setClose(!close)
       setModal(false)
 
-
-
     }
-
-
 
 
 
   return (
 
     <>
-     <EditForm close={close} toggle={(e) => setClose(!close)} key={replyComments.postID} text={value} />
+     <EditForm param={replyComments.parentPostID} id={replyComments.postID} close={close} toggle={(e) => setClose(!close)} key={replyComments.postID} text={value} />
       <article key={replyComments} className={ close ? "hidden" : "p-6 mb-3 ml-6 lg:ml-12 text-black  text-base bg-white rounded-lg  shadow-sm"}>
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">

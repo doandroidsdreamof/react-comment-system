@@ -1,13 +1,13 @@
 import React, { useState, useReducer, useContext } from 'react'
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
-import { commentObserver, removedObserver,editToggle,closeModalToggle } from '../../store/reducers/userSlice'
+import { commentObserver, removedObserver, editToggle, closeModalToggle } from '../../store/reducers/userSlice'
 // firebase //
-import  firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import {
-  getAuth,
+    getAuth,
 } from 'firebase/auth';
-import { getDocs, collection, doc, setDoc, getDoc, addDoc,FieldValue, Timestamp,where,query, updateDoc, arrayUnion } from 'firebase/firestore'
+import { getDocs, collection, doc, setDoc, getDoc, addDoc, FieldValue, Timestamp, where, query, updateDoc, arrayUnion } from 'firebase/firestore'
 import { db } from '../../firebase';
 // context //
 import { AuthContext } from '../../context/AuthContext';
@@ -21,20 +21,56 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-const EditForm = ({text,close,toggle}) => {
+const EditForm = ({ text, close, toggle, id, param }) => {
     const editModalRedux = useSelector((state: any) => state.edit.editModalSlice.edit)
     const closeModalRedux = useSelector((state: any) => state.modal.closeModalSlice.modal)
-
+    const [commentsData, setCommentsData] = useState([text])
     const dispatch = useDispatch()
+    const user: any = useContext(AuthContext)
+    const auth: any = getAuth()
 
-
-    //   value={replyComments?.text}
-
-    const cancelEdit = async () =>{
+    const cancelEdit = async () => {
         dispatch(editToggle())
         toggle()
     }
+    async function setReplyComments(e: Event) {
+        e.preventDefault()
+        if (commentsData.length > 0) {
+            try {
 
+                    //* update database //
+                    const q = query(collection(db, 'comments'), where('postID', '==', id))
+                    const querySnapshot = await getDocs(q)
+                    querySnapshot.forEach((doc) => {
+                        updateDoc(doc.ref, {
+                            userName: auth?.currentUser?.displayName,
+                            createdAt: Timestamp.fromDate(new Date()),
+                            date: new Date().toDateString(),
+                            userID: auth?.currentUser?.uid,
+                            text: commentsData,
+                            postID: uuidv4(),
+                            nested: true,
+                            photoURL: auth?.currentUser?.photoURL,
+                            email: user?.email,
+                            parentPostID:id
+                        })
+                    })
+                    reduxObserver()
+
+                }
+            catch (error) {
+                console.error(error)
+            }
+        }
+    }
+
+    function reduxObserver() {
+        setTimeout(() => {
+            dispatch(commentObserver())
+        }, 100)
+        //* after submit close form //
+        toggle()
+    }
     return (
         <>
             {/* edit comment section */}
@@ -42,21 +78,23 @@ const EditForm = ({text,close,toggle}) => {
                 <div className={"p-6 mb-3 ml-6 lg:ml-12  text-black bg-white rounded-lg rounded-t-lg border border-gray-400 "}>
                     <label htmlFor="comment" className="sr-only z-50">Your comment</label>
                     <textarea
-                        value={text}
+                        onChange={(e) => setCommentsData(e.target.value)}
+                        value={commentsData}
                         className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none "
-                        required></textarea>
-
+                        required>
+                    </textarea>
                 </div>
                 <div className='ml-6 lg:ml-12'>
-                <button
-                    className="inline-flex mr-2 items-center py-1.5 mb-4 px-5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800">
-                    {"post"}
-                </button>
-                <button
-                    onClick={(e) => cancelEdit(e)}
-                    className="inline-flex items-center py-1.5 mb-4 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800">
-                    {"cancel"}
-                </button>
+                    <button
+                        onClick={(e) => setReplyComments(e)}
+                        className="inline-flex mr-2 items-center py-1.5 mb-4 px-5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800">
+                        {"post"}
+                    </button>
+                    <button
+                        onClick={(e) => cancelEdit(e)}
+                        className="inline-flex items-center py-1.5 mb-4 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800">
+                        {"cancel"}
+                    </button>
                 </div>
 
             </div>
