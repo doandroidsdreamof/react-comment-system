@@ -11,6 +11,7 @@ import { db } from '../../firebase';
 import ReplyCommentForm from './ReplyCommentForm';
 import ReplyComments from './ReplyComments';
 import removeComment from '../../hooks/removeComment';
+import EditForm from './EditForm';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
@@ -30,6 +31,7 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(false)
   const [render, setRender] = useState(false)
+  const [editModal, setEditModal] = useState(false)
   const [replyComments, setReplyComments] = useState<any>([])
 
 
@@ -54,10 +56,16 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
   setParentID(e?.target?.id)
  }
 
+ function editFormToggle(){
+  setEditModal(!editModal)
+  setModal(false)
+ }
+
 
   return (
     <>
-      <article className={ "p-6 mb-6    text-base bg-white rounded-lg  shadow-sm" }>
+    <EditForm text={items.text} close={editModal} toggle={(e) => setEditModal(false)} />
+      <article className={ editModal ? "hidden" : "p-6 mb-6    text-base bg-white rounded-lg  shadow-sm" }>
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
@@ -73,7 +81,7 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
               type="button"
               onClick={() => setModal(!modal)}
             >
-              <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+              <svg className={items?.userName === "removed" ?  "hidden" : "w-5 h-5"} aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
@@ -83,10 +91,11 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
             </button>
             <div
               className={modal ? 'absolute z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ' : 'hidden'}>
-              <ul className="py-1 text-sm text-gray-700 "
+              <ul className={items?.userName === "removed" ?  "hidden" : "py-1 text-sm text-gray-700"}
                 aria-labelledby="dropdownMenuIconHorizontalButton">
                 <li>
                   <button
+                    onClick={(e) => { editFormToggle(e) }}
                     className="block py-2 px-4 w-full text-left hover:bg-gray-100  cursor-pointer">Edit</button>
                 </li>
                 <li>
