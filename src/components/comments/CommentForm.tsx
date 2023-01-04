@@ -40,19 +40,7 @@ const CommentForm = (reply: any) => {
           email:user?.email
 
         });
-        const r = await addDoc(collection(db,"sub-comments"), {
-          userName: '',
-          createdAt: '',
-          date: '',
-          userID: '',
-          text: '',
-          postID: '',
-          nested: true,
-          photoURL: '',
-          email: '',
-          parentPostID:''
 
-        });
         updateAvatar()
         getCommentData('')
 
