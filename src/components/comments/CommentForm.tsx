@@ -26,20 +26,21 @@ const CommentForm = (reply: any) => {
     dispatch(commentObserver())
     if (commentData.length > 0) {
       try {
-
-        const docRef = await addDoc(collection(db, "comments"), {
+        const id = uuidv4()
+        const colRef = collection(db,"comments")
+        const docRef = await setDoc(doc(db, "comments",id), {
           userName: auth?.currentUser?.displayName,
           createdAt: Timestamp.fromDate(new Date()),
           date: new Date().toDateString(),
           userID: auth?.currentUser?.uid,
           text: commentData,
-          postID: uuidv4(),
+          postID:  id,
           reply: [],
           photoURL: auth?.currentUser?.photoURL,
           email:user?.email
 
         });
-        const r = await addDoc(collection(docRef,"sub-comments"), {
+        const r = await addDoc(collection(db,"sub-comments"), {
           userName: '',
           createdAt: '',
           date: '',

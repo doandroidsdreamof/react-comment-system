@@ -31,10 +31,9 @@ const ReplyCommentForm = (open: any, parentID: any) => {
     if (commentsData.length > 0) {
       try {
         //* update database //
-        const q = query(collection(db, 'sub-comments'), where('postID', '==', open?.ID))
-        const querySnapshot = await getDocs(q)
-        querySnapshot.forEach((doc: any) => {
-          addDoc(doc.ref, {
+        const docRef = await addDoc(
+          collection(db, "comments", open.ID, "sub-comments"),
+          {
             userName: auth?.currentUser?.displayName,
             createdAt: Timestamp.fromDate(new Date()),
             date: new Date().toDateString(),
@@ -46,11 +45,10 @@ const ReplyCommentForm = (open: any, parentID: any) => {
             email: user?.email,
             parentPostID: open?.ID
 
+          }
+        );
 
-          })
-        })
-
-
+console.log(docRef.id)
         setTimeout(() => {
           dispatch(commentObserver())
         }, 100)
