@@ -39,22 +39,6 @@ const EditForm = ({ text, close, toggle, id, param }) => {
             try {
 
                     //* update database //
-                    const q = query(collection(db, 'comments'), where('postID', '==', id))
-                    const querySnapshot = await getDocs(q)
-                    querySnapshot.forEach((doc) => {
-                        updateDoc(doc.ref, {
-                            userName: auth?.currentUser?.displayName,
-                            createdAt: Timestamp.fromDate(new Date()),
-                            date: new Date().toDateString(),
-                            userID: auth?.currentUser?.uid,
-                            text: commentsData,
-                            postID: uuidv4(),
-                            nested: true,
-                            photoURL: auth?.currentUser?.photoURL,
-                            email: user?.email,
-                            parentPostID:id
-                        })
-                    })
                     reduxObserver()
 
                 }

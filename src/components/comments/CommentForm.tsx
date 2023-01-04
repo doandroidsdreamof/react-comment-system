@@ -26,6 +26,7 @@ const CommentForm = (reply: any) => {
     dispatch(commentObserver())
     if (commentData.length > 0) {
       try {
+
         const docRef = await addDoc(collection(db, "comments"), {
           userName: auth?.currentUser?.displayName,
           createdAt: Timestamp.fromDate(new Date()),
@@ -36,6 +37,19 @@ const CommentForm = (reply: any) => {
           reply: [],
           photoURL: auth?.currentUser?.photoURL,
           email:user?.email
+
+        });
+        const r = await addDoc(collection(docRef,"sub-comments"), {
+          userName: '',
+          createdAt: '',
+          date: '',
+          userID: '',
+          text: '',
+          postID: '',
+          nested: true,
+          photoURL: '',
+          email: '',
+          parentPostID:''
 
         });
         updateAvatar()

@@ -122,12 +122,12 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
           </button>
         </div>
       </article>
-        <ReplyCommentForm ID={parentID} close={open} open={(e) => setOpen(false)} key={items?.postID} />
-      {
+        <ReplyCommentForm ID={items.postID} close={open} open={(e) => setOpen(false)} key={items?.postID} />
+      {/* {
         items.reply.map((data,index) =>(
           <ReplyComments replyComments={data} key={index} />
         ))
-      }
+      } */}
 
     </>
 

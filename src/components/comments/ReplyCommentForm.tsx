@@ -31,24 +31,26 @@ const ReplyCommentForm = (open: any, parentID: any) => {
     if (commentsData.length > 0) {
       try {
         //* update database //
-        const q = query(collection(db, 'comments'), where('postID', '==', open?.ID))
+        const q = query(collection(db, 'sub-comments'), where('postID', '==', open?.ID))
         const querySnapshot = await getDocs(q)
-        querySnapshot.forEach((doc) => {
-          updateDoc(doc.ref, {
-            reply: arrayUnion({
-              userName: auth?.currentUser?.displayName,
-              createdAt: Timestamp.fromDate(new Date()),
-              date: new Date().toDateString(),
-              userID: auth?.currentUser?.uid,
-              text: commentsData,
-              postID: uuidv4(),
-              nested: true,
-              photoURL: auth?.currentUser?.photoURL,
-              email: user?.email,
-              parentPostID: open?.ID
-            })
+        querySnapshot.forEach((doc: any) => {
+          addDoc(doc.ref, {
+            userName: auth?.currentUser?.displayName,
+            createdAt: Timestamp.fromDate(new Date()),
+            date: new Date().toDateString(),
+            userID: auth?.currentUser?.uid,
+            text: commentsData,
+            postID: uuidv4(),
+            nested: true,
+            photoURL: auth?.currentUser?.photoURL,
+            email: user?.email,
+            parentPostID: open?.ID
+
+
           })
         })
+
+
         setTimeout(() => {
           dispatch(commentObserver())
         }, 100)
