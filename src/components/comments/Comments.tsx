@@ -81,7 +81,7 @@ const Comments: React.FC<CommentsData> = ({ items }: CommentsData[]) => {
 
   return (
     <>
-      <EditForm id={items.postID} text={items.text} close={editModal} toggle={(e) => setEditModal(false)} />
+      <EditForm postID={null} reply={false}  ID={items.postID} text={items.text} close={editModal} toggle={(e) => setEditModal(false)} />
       <article className={editModal ? 'hidden' : 'p-6 mb-6    text-base bg-white rounded-lg  shadow-sm'}>
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">

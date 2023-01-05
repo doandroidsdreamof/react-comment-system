@@ -7,7 +7,7 @@ import firebase from 'firebase/app';
 import {
     getAuth,
 } from 'firebase/auth';
-import { getDocs, collection, doc, setDoc, getDoc, addDoc, FieldValue, Timestamp, where, query, updateDoc, arrayUnion } from 'firebase/firestore'
+import { getDocs, collection, doc, collectionGroup, onSnapshot, setDoc, getDoc, addDoc, FieldValue, Timestamp, where, query, updateDoc, arrayUnion, orderBy } from 'firebase/firestore'
 import { db } from '../../firebase';
 // context //
 import { AuthContext } from '../../context/AuthContext';
@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-const EditForm = ({ text, close, toggle, id }) => {
+const EditForm = ({ text, close, toggle, ID, reply, postID }) => {
     const editModalRedux = useSelector((state: any) => state.edit.editModalSlice.edit)
     const closeModalRedux = useSelector((state: any) => state.modal.closeModalSlice.modal)
     const [commentsData, setCommentsData] = useState([text])
@@ -37,11 +37,28 @@ const EditForm = ({ text, close, toggle, id }) => {
         e.preventDefault()
         if (commentsData.length > 0) {
             try {
-
-                    //* update database //
-                    reduxObserver()
+                if (reply === true) {
+                    const q = query(collectionGroup(db, 'sub-comments'), where('postID', '==', ID), orderBy('createdAt'));
+                    const querySnapshot = await getDocs(q);
+                    querySnapshot.forEach((doc) => {
+                        console.log(doc.id, ' => ', doc.data());
+                    });
 
                 }
+                if (reply === false) {
+                    //* update database //
+                    const q = query(collection(db, 'comments'), where('postID', '==', ID))
+                    const querySnapshot = await getDocs(q)
+                    querySnapshot.forEach((doc) => {
+                        updateDoc(doc.ref, {
+                            text: commentsData,
+
+                        })
+                    })
+                }
+
+                reduxObserver()
+            }
             catch (error) {
                 console.error(error)
             }
