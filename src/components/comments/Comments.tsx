@@ -36,7 +36,7 @@ const Comments: React.FC<CommentsData> = ({ items }: CommentsData[]) => {
 
   useEffect(() => {
     getReply()
-  }, [])
+  }, [open])
 
   async function deleteTodo(e: any) {
     e.preventDefault()
