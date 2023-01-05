@@ -19,7 +19,7 @@ import fallBack from '../../assets/images/fallback-image.jpg'
 import { v4 as uuidv4 } from "uuid";
 
 
-const ReplyCommentForm = (open: any, parentID: any) => {
+const ReplyCommentForm = (open: any) => {
   const [commentsData, setCommentsData] = useState<string>('')
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
@@ -47,8 +47,6 @@ const ReplyCommentForm = (open: any, parentID: any) => {
 
           }
         );
-
-console.log(docRef.id)
         setTimeout(() => {
           dispatch(commentObserver())
         }, 100)

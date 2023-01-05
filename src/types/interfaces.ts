@@ -28,14 +28,13 @@ export interface AuthContextInterFace {
   export interface ReplyCommentsData{
     userID: string,
     userName: string,
-    createdAt: any,
+    createdAt: any | string,
     email: string,
     date: string,
     text: string,
     postID: string,
     photoURL: string,
-    replyComment:boolean,
-    parentPostID?:string,
+    parentPostID:string,
     nested:boolean
   }
 

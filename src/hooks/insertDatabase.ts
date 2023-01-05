@@ -16,12 +16,6 @@ const insertDatabase =  function ({datas}: any) {
         email: datas?.email,
         date: new Date().toLocaleString(),
         photoURL: null,
-        comments: {
-          id: 0,
-          comment: [],
-          parentId: null,
-          createdAt: '',
-        },
       });
     } catch (e) {
       console.error('Error adding document: ', e);

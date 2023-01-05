@@ -35,7 +35,6 @@ const CommentForm = (reply: any) => {
           userID: auth?.currentUser?.uid,
           text: commentData,
           postID:  id,
-          reply: [],
           photoURL: auth?.currentUser?.photoURL,
           email:user?.email
 

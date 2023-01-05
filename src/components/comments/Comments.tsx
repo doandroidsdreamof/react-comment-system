@@ -16,7 +16,7 @@ import EditForm from './EditForm';
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
 // interfaces //
-import { CommentsData } from '../../types/interfaces'
+import { CommentsData,ReplyCommentsData } from '../../types/interfaces'
 // image //
 import fallBack from '../../assets/images/fallback-image.jpg'
 
@@ -32,12 +32,10 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
   const [modal, setModal] = useState(false)
   const [render, setRender] = useState(false)
   const [editModal, setEditModal] = useState(false)
-  const [replyComments, setReplyComments] = useState<any>([])
 
 
 
  useEffect(() =>{
-
 
  },[])
 
@@ -60,6 +58,7 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
   setEditModal(!editModal)
   setModal(false)
  }
+
 
 
   return (
@@ -122,16 +121,11 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
           </button>
         </div>
       </article>
-        <ReplyCommentForm ID={items.postID} close={open} open={(e) => setOpen(false)} key={items?.postID} />
-      {/* {
-        items.reply.map((data,index) =>(
-          <ReplyComments replyComments={data} key={index} />
-        ))
-      } */}
-
-    </>
+        <ReplyCommentForm ID={items.postID} close={open} open={(e) => setOpen(false)}  />
+        <ReplyComments replyComments={items.postID} />
 
 
+</>
 
   )
 }

@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-const EditForm = ({ text, close, toggle, id, param }) => {
+const EditForm = ({ text, close, toggle, id }) => {
     const editModalRedux = useSelector((state: any) => state.edit.editModalSlice.edit)
     const closeModalRedux = useSelector((state: any) => state.modal.closeModalSlice.modal)
     const [commentsData, setCommentsData] = useState([text])
