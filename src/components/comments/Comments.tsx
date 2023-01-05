@@ -16,59 +16,73 @@ import EditForm from './EditForm';
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
 // interfaces //
-import { CommentsData,ReplyCommentsData } from '../../types/interfaces'
+import { CommentsData, ReplyCommentsData } from '../../types/interfaces'
 // image //
 import fallBack from '../../assets/images/fallback-image.jpg'
 
 
-const Comments: React.FC<CommentsData> = ({items }: any) => {
+const Comments: React.FC<CommentsData> = ({ items }: CommentsData[]) => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
-  const [parentID,setParentID] = useState<string>('')
-  const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
+  const [parentID, setParentID] = useState<string>('')
+  const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(false)
-  const [render, setRender] = useState(false)
   const [editModal, setEditModal] = useState(false)
+  const [reply, setReply] = useState([])
 
 
-
- useEffect(() =>{
-
- },[])
+  useEffect(() => {
+    getReply()
+  }, [])
 
   async function deleteTodo(e: any) {
     e.preventDefault()
     setModal(false)
     removeComment(e)
-    setTimeout(() =>{
+    setTimeout(() => {
       dispatch(removedObserver())
-    },1000)
+    }, 1000)
 
 
   }
- function replyComment(e){
-  setOpen(!open)
-  setParentID(e?.target?.id)
- }
+  function replyComment(e) {
+    setOpen(!open)
+    setParentID(e?.target?.id)
+  }
 
- function editFormToggle(){
-  setEditModal(!editModal)
-  setModal(false)
- }
+  function editFormToggle() {
+    setEditModal(!editModal)
+    setModal(false)
+  }
 
+
+  async function getReply() {
+    try {
+      const subColRef = collection(db, 'comments', items.postID, 'sub-comments');
+      const querySnapshot = await getDocs(subColRef)
+      const getData: any[] = []
+      querySnapshot.forEach((doc) => {
+        getData.push(doc.data())
+      })
+      setReply([...getData])
+    }
+    catch (err) {
+      console.error(err)
+    }
+  }
 
 
   return (
     <>
-    <EditForm  id={items.postID} text={items.text} close={editModal} toggle={(e) => setEditModal(false)} />
-      <article className={ editModal ? "hidden" : "p-6 mb-6    text-base bg-white rounded-lg  shadow-sm" }>
+      <EditForm id={items.postID} text={items.text} close={editModal} toggle={(e) => setEditModal(false)} />
+      <article className={editModal ? "hidden" : "p-6 mb-6    text-base bg-white rounded-lg  shadow-sm"}>
         <footer className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
-               className="mr-2 w-6 h-6 rounded-full"
+              className="mr-2 w-6 h-6 rounded-full"
               src={items.photoURL === null ? fallBack : items.photoURL}
               alt={items?.userName} />{items?.userName}</p>
             <p className="text-xs text-gray-600 "><time
@@ -76,11 +90,11 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
           </div>
           <div className="  ml-auto  ">
             <button
-              className={items.userID === user.uid ? " inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 " : "hidden"}
+              className={items.userID === user?.uid ? " inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 " : "hidden"}
               type="button"
               onClick={() => setModal(!modal)}
             >
-              <svg className={items?.userName === "removed" ?  "hidden" : "w-5 h-5"} aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+              <svg className={items?.userName === "removed" ? "hidden" : "w-5 h-5"} aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
@@ -90,7 +104,7 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
             </button>
             <div
               className={modal ? 'absolute z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow ' : 'hidden'}>
-              <ul className={items?.userName === "removed" ?  "hidden" : "py-1 text-sm text-gray-700"}
+              <ul className={items?.userName === "removed" ? "hidden" : "py-1 text-sm text-gray-700"}
                 aria-labelledby="dropdownMenuIconHorizontalButton">
                 <li>
                   <button
@@ -121,11 +135,16 @@ const Comments: React.FC<CommentsData> = ({items }: any) => {
           </button>
         </div>
       </article>
-        <ReplyCommentForm ID={items.postID} close={open} open={(e) => setOpen(false)}  />
-        <ReplyComments replyComments={items.postID} />
+      <ReplyCommentForm ID={items.postID} close={open} open={(e) => setOpen(false)} />
+      {
+        reply.map((data, index) => (
+          <ReplyComments replyComments={data} key={index} />
+        ))
+      }
 
 
-</>
+
+    </>
 
   )
 }

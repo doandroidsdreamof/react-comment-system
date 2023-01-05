@@ -21,14 +21,15 @@ export interface AuthContextInterFace {
     date: string,
     text: string,
     postID: string,
-    reply: any[],
-    photoURL: string
+    photoURL: string,
+    email: string,
+
   }
 
   export interface ReplyCommentsData{
     userID: string,
     userName: string,
-    createdAt: any | string,
+    createdAt: any,
     email: string,
     date: string,
     text: string,

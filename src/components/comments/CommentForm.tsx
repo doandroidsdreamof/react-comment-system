@@ -1,17 +1,16 @@
-import React, { useState, useReducer, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
 import { commentObserver } from '../../store/reducers/userSlice'
 // context //
 import { AuthContext } from '../../context/AuthContext'
 // firebase //
-import { getDocs, collection, doc, setDoc, getDoc, addDoc, Timestamp, updateDoc,query,where } from 'firebase/firestore'
+import { getDocs, collection, doc, setDoc, Timestamp, updateDoc,query,where } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 import { db } from '../../firebase'
 // unique id //
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 // interfaces //
-import { CommentsData } from '../../types/interfaces'
 
 
 const CommentForm = (reply: any) => {
@@ -27,8 +26,8 @@ const CommentForm = (reply: any) => {
     if (commentData.length > 0) {
       try {
         const id = uuidv4()
-        const colRef = collection(db,"comments")
-        const docRef = await setDoc(doc(db, "comments",id), {
+        const colRef = collection(db,'comments')
+        const docRef = await setDoc(doc(db, 'comments',id), {
           userName: auth?.currentUser?.displayName,
           createdAt: Timestamp.fromDate(new Date()),
           date: new Date().toDateString(),
@@ -68,7 +67,7 @@ const CommentForm = (reply: any) => {
   return (
     <>
       {
-        <form className={" mb-6 bg-white shadow-sm p-2 rounded-md"}>
+        <form className={' mb-6 bg-white shadow-sm p-2 rounded-md'}>
           <div className="py-2 px-4 mb-4  text-black bg-white rounded-lg rounded-t-lg border border-gray-400 ">
             <label htmlFor="comment" className="sr-only z-50">Your comment</label>
             <textarea
@@ -81,7 +80,7 @@ const CommentForm = (reply: any) => {
             onClick={(e: any) => setCommentValue(e)}
             type="submit"
             className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800">
-            {"Post comment"}
+            {'Post comment'}
           </button>
         </form>
 

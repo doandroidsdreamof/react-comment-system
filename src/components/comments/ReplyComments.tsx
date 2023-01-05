@@ -5,39 +5,37 @@ import { AuthContext } from '../../context/AuthContext';
 import {
   getAuth,
 } from 'firebase/auth';
-import { collection, query, where, deleteDoc, getDocs, doc, updateDoc } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase';
 // local imports //
-import ReplyCommentForm from './ReplyCommentForm';
 import removeReplyComment from '../../hooks/removeReplyComment';
 import EditForm from './EditForm';
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
-import { commentObserver, removedObserver, editToggle } from '../../store/reducers/userSlice'
+import { removedObserver, editToggle } from '../../store/reducers/userSlice'
 // interfaces //
 import { CommentsData, ReplyCommentsData } from '../../types/interfaces'
 // image //
 import fallBack from '../../assets/images/fallback-image.jpg'
 // unique id //
-import { v4 as uuidv4 } from "uuid";
 
 
-const ReplyComments = ({ replyComments }: any) => {
+const ReplyComments  = ({ replyComments }: any) => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
-  const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice)
+  const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
   const editModalRedux = useSelector((state: any) => state.edit.editModalSlice.edit)
   const [modal, setModal] = useState(false)
   const [close, setClose] = useState(false)
-  const [value, setValue] = useState<any[]>([])
+  const [value, setValue] = useState<ReplyCommentsData[]>([])
   const dispatch = useDispatch()
 
 
   useEffect(() => {
-    getReply()
 
-  }, [])
+
+  }, [commentObserverRedux])
 
 
   async function deleteTodo(e: any) {
@@ -57,37 +55,25 @@ const ReplyComments = ({ replyComments }: any) => {
     setModal(false)
 
   }
-  async function getReply() {
-    const subColRef =  collection(db, "comments", replyComments, "sub-comments");
-    const querySnapshot = await getDocs(subColRef)
-    const getData: any[] = []
-    querySnapshot.forEach((doc) => {
-      getData.push(doc.data())
-    })
-    setValue([...getData])
 
-  }
 
 
   return (
-
     <>
-      {value && value.map((reply, index) => {
-         <>
-          <EditForm  id={reply.postID} close={close} toggle={(e) => setClose(!close)} key={reply.postID} text={reply.text} />
-          <article key={index} className={close ? "hidden" : "p-6 mb-3 ml-6 lg:ml-12 text-black  text-base bg-white rounded-lg  shadow-sm"}>
+          <EditForm id={replyComments.postID} close={close} toggle={(e) => setClose(!close)}  text={replyComments.text} />
+          <article className={close ? 'hidden' : 'p-6 mb-3 ml-6 lg:ml-12 text-black  text-base bg-white rounded-lg  shadow-sm'}>
             <footer className="flex justify-between items-center mb-2">
               <div className="flex items-center">
                 <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
                   className="mr-2 w-6 h-6 rounded-full"
-                  src={reply.photoURL ? reply.photoURL : fallBack}
-                  alt={reply?.userName} />{reply?.userName}</p>
+                  src={replyComments.photoURL ? replyComments.photoURL : fallBack}
+                  alt={replyComments?.userName} />{replyComments?.userName}</p>
                 <p className="text-xs text-gray-600 "><time
-                  title="date">{reply?.date}</time></p>
+                  title="date">{replyComments?.date}</time></p>
               </div>
               <div className="  ml-auto  ">
                 <button
-                  className={reply.userID === user.uid ? " inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 " : "hidden"}
+                  className={replyComments?.userID === user?.uid ? ' inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 ' : 'hidden'}
                   type="button"
                   onClick={() => setModal(!modal)}
                 >
@@ -110,7 +96,7 @@ const ReplyComments = ({ replyComments }: any) => {
                     </li>
                     <li>
                       <button
-                        id={reply?.parentPostID}
+                        id={replyComments?.parentPostID}
                         onClick={(e) => deleteTodo(e)}
                         className="block z-50 w-full text-left py-2 px-4 hover:bg-gray-100  cursor-pointer ">Remove</button>
                     </li>
@@ -119,13 +105,10 @@ const ReplyComments = ({ replyComments }: any) => {
               </div>
             </footer>
             <p className="text-gray-500 ">
-              {reply.text}
+              {replyComments.text}
             </p>
           </article>
         </>
-      })}
-
-    </>
 
   )
 }

@@ -33,7 +33,7 @@ const NavigationBar = () => {
   const user: any = useContext(AuthContext);
   const [url, setUrl]: any = useState(null);
   const dispatch = useDispatch()
-  const userRedux = useSelector(selectUser);
+
 
   useEffect(() => {
       // if user already have an avatar download it //

@@ -13,8 +13,8 @@ import { getAuth } from 'firebase/auth';;
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../../firebase';
 // flowbite //
-
 // interfaces && types //
+import { CommentsData, ReplyCommentsData } from '../../types/interfaces'
 // redux //
 import { useSelector } from 'react-redux'
 
@@ -25,7 +25,7 @@ const Comment = () => {
   const auth: any = getAuth();
   const storage = getStorage();
   const [avatar, setAvatar] = useState<string>('')
-  const [userComments, setUserComments] = useState<any>([])
+  const [userComments, setUserComments] = useState<CommentsData[]>([])
   const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
 
@@ -39,8 +39,8 @@ const Comment = () => {
   }, [commentObserverRedux,removedObserverRedux])
 
   async function getUserComments() {
-    const datas: any[] = []
     const getData = await getDocs(collection(db, 'comments'))
+    const datas: CommentsData[] = []
     getData.forEach((doc) => {
       datas.push(doc.data())
     })

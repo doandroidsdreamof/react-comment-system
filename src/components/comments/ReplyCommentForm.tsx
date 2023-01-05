@@ -1,22 +1,19 @@
-import React, { useState, useReducer, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
-import { commentObserver, removedObserver } from '../../store/reducers/userSlice'
+import { commentObserver } from '../../store/reducers/userSlice'
 // firebase //
-import firebase from 'firebase/app';
 import {
   getAuth,
 } from 'firebase/auth';
-import { getDocs, collection, doc, setDoc, getDoc, addDoc, FieldValue, Timestamp, where, query, updateDoc, arrayUnion } from 'firebase/firestore'
+import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../../firebase';
 // context //
 import { AuthContext } from '../../context/AuthContext';
 // interfaces //
-import { CommentsData, ReplyCommentsData } from '../../types/interfaces'
 // image //
-import fallBack from '../../assets/images/fallback-image.jpg'
 // unique id //
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const ReplyCommentForm = (open: any) => {
@@ -32,12 +29,12 @@ const ReplyCommentForm = (open: any) => {
       try {
         //* update database //
         const docRef = await addDoc(
-          collection(db, "comments", open.ID, "sub-comments"),
+          collection(db, 'comments', open.ID, 'sub-comments'),
           {
             userName: auth?.currentUser?.displayName,
             createdAt: Timestamp.fromDate(new Date()),
             date: new Date().toDateString(),
-            userID: auth?.currentUser?.uid,
+            userID: user?.uid,
             text: commentsData,
             postID: uuidv4(),
             nested: true,
@@ -66,7 +63,7 @@ const ReplyCommentForm = (open: any) => {
     <>
       {
         <form className={open?.close ?
-          " mb-6 bg-white shadow-sm p-2 rounded-md" : "hidden"}>
+          ' mb-6 bg-white shadow-sm p-2 rounded-md' : 'hidden'}>
           <div className="py-2 px-4 mb-4  text-black bg-white rounded-lg rounded-t-lg border border-gray-400 ">
             <label htmlFor="comment" className="sr-only z-50">Your comment</label>
             <textarea
@@ -79,7 +76,7 @@ const ReplyCommentForm = (open: any) => {
             onClick={(e: any) => setReplyComments(e)}
             type="submit"
             className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800">
-            {"Post reply"}
+            {'Post reply'}
           </button>
         </form>
 
