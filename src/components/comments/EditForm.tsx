@@ -28,7 +28,7 @@ const EditForm = ({ text, close, toggle, ID, reply, postID }) => {
     const dispatch = useDispatch()
     const user: any = useContext(AuthContext)
     const auth: any = getAuth()
-    
+
     //! ID parentID olmalı //
 
     const cancelEdit = async () => {
@@ -42,12 +42,15 @@ const EditForm = ({ text, close, toggle, ID, reply, postID }) => {
                 if (reply === true) {
                     const allPosts = await getDocs(collectionGroup(db, "sub-comments"))
                     allPosts.forEach((doc) => {
-                        console.log("🚀 ~ fi", doc.data(), doc.id)
-                        console.log(doc.id == ID, ID)
+                        if(doc.data().postID == postID){
+                            updateDoc(doc.ref, {
+                                text: commentsData,
 
-
+                            })
+                        }
 
                     });
+                    reduxObserver()
 
                 }
 
@@ -61,9 +64,10 @@ const EditForm = ({ text, close, toggle, ID, reply, postID }) => {
 
                     })
                 })
+                reduxObserver()
             }
 
-            reduxObserver()
+
         }
             catch (error) {
             console.error(error)

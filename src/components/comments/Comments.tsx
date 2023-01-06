@@ -25,7 +25,7 @@ const Comments: React.FC<CommentsData> = ({ items }: CommentsData[]) => {
   const user: any = useContext(AuthContext)
   const auth: any = getAuth()
   const [parentID, setParentID] = useState<string>('')
-  const commentObserverRedux = useSelector((state: any) => state.observer.selectCommentObserver)
+  const commentObserverRedux = useSelector((state: any) => state.observer.commentSlice.observer)
   const removedObserverRedux = useSelector((state: any) => state.removed.removedSlice.removed)
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
@@ -36,7 +36,7 @@ const Comments: React.FC<CommentsData> = ({ items }: CommentsData[]) => {
 
   useEffect(() => {
     getReply()
-  }, [open])
+  }, [open,commentObserverRedux])
 
   async function deleteTodo(e: any) {
     e.preventDefault()
