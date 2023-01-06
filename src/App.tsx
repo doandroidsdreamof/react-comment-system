@@ -15,9 +15,11 @@ import {
 onAuthStateChanged,
 getAuth
 } from 'firebase/auth';
+import ProtectedRoute from './routes/ProtectedRoute'
 
 function App() {
   const user = useContext(AuthContext)
+  console.log("🚀 ~ file: App.tsx:21 ~ App ~ user", user)
   const dispatch = useDispatch()
   const auth = getAuth()
   const userRedux = useSelector(selectUser);
@@ -41,7 +43,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/' element={user !== null ? <HomePage /> : <RegisterPage />} />
+      <Route path='/' element={<ProtectedRoute /> } />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/register' element={<RegisterPage />} />
     </Routes>
