@@ -91,7 +91,7 @@ Install my-project with npm
 Clone the project
 
 ```bash
-  git clone https://github.com/doandroidsdreamof/comments-system.git
+  git clone https://github.com/doandroidsdreamof/react-comment-system.git
 ```
 
 Go to the project directory
