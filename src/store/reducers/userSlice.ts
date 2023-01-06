@@ -69,15 +69,32 @@ export const closeModalSlice = createSlice({
   },
 })
 
+//* re-auth modal //
+export const reauthModalSlice = createSlice({
+  name: 'reauth',
+  initialState: {
+    reauth: false,
+  },
+  reducers: {
+    reauthToggle: (state) => {
+      state.reauth = !state.reauth
+    },
+  },
+})
+
+
 
 export const { login, logout } = userSlice.actions
 export const { commentObserver } = commentSlice.actions
 export const { removedObserver } = removedSlice.actions
 export const { editToggle } = editModalSlice.actions
 export const { closeModalToggle } = closeModalSlice.actions
+export const { reauthToggle } = reauthModalSlice.actions
+
 export const selectUser = (state) => state.user.user
 export const selectCommentObserver = (state) => state.observer.observer
 export const selectRemovedObserver = (state) => state.removed.removed
+export const selectReauthModalSlice = (state) => state.reauth.reauth
 export const selectEditToggle = (state) => state.edit.edit
 export const closeModal = (state) => state.modal.modal
 export default combineReducers({
@@ -85,6 +102,6 @@ export default combineReducers({
   commentSlice: commentSlice.reducer,
   removedSlice: removedSlice.reducer,
   editModalSlice: editModalSlice.reducer,
-  closeModalSlice: closeModalSlice.reducer
-
+  closeModalSlice: closeModalSlice.reducer,
+  reauthModalSlice: reauthModalSlice.reducer
 });

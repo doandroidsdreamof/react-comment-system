@@ -7,7 +7,8 @@ export default configureStore({
       observer: reducers,
       removed: reducers,
       edit:reducers,
-      modal:reducers
+      modal:reducers,
+      reauth: reducers
 
     },
 

@@ -5,7 +5,7 @@ import { logout, selectUser } from '../store/reducers/userSlice';
 import NavigationBar from '../components/common/NavigationBar';
 import Comments from '../components/comments/Comments';
 import Comment from '../components/comments/Comment';
-
+import DeleteAccountModal from '../components/common/DeleteAccountModal';
 
 
 const HomePage = () => {
@@ -17,7 +17,9 @@ const HomePage = () => {
   return (
     <div className=''>
       <NavigationBar />
+      <DeleteAccountModal />
       <div className=''>
+
       <Comment />
 
       </div>

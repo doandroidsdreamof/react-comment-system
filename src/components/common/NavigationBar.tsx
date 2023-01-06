@@ -7,10 +7,10 @@ import {
   list,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { getAuth, updateProfile } from "firebase/auth";
+import { getAuth, updateProfile,deleteUser,EmailAuthProvider,reauthenticateWithCredential } from "firebase/auth";
 // redux //
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, login, selectUser } from '../../store/reducers/userSlice'
+import { logout, login, selectUser,reauthToggle} from '../../store/reducers/userSlice'
 // flowbite //
 import {
   Navbar,
@@ -25,6 +25,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
 // images //
 import fallbackImage from '../../assets/images/fallback-image.png';
+import DeleteAccountModal from './DeleteAccountModal';
+
 
 const NavigationBar = () => {
   const refImage: any = useRef();
@@ -33,7 +35,7 @@ const NavigationBar = () => {
   const user: any = useContext(AuthContext);
   const [url, setUrl]: any = useState(null);
   const dispatch = useDispatch()
-
+  const reauthModalRedux = useSelector((state: any) => state.reauth.reauthModalSlice.reauth)
 
   useEffect(() => {
       // if user already have an avatar download it //
@@ -73,7 +75,9 @@ const NavigationBar = () => {
     dispatch(logout());
     auth.signOut()
   }
-
+function deleteAccountModal(){
+  dispatch(reauthToggle())
+}
 
   return (
     <Navbar fluid={true} rounded={true} className=' bg-white rounded-none border-b-0 md:border-b-2'>
@@ -109,7 +113,7 @@ const NavigationBar = () => {
             <button onClick={openUpload} className='cursor-pointer'>Upload image</button>
           </Dropdown.Item>
           <Dropdown.Item onClick={logOut}>Sign out</Dropdown.Item>
-          <Dropdown.Item>Delete account</Dropdown.Item>
+          <Dropdown.Item onClick={() => deleteAccountModal()}>Delete account</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
@@ -120,7 +124,11 @@ const NavigationBar = () => {
         <Navbar.Link href='/login'>Login</Navbar.Link>
         <Navbar.Link href='/register'>Register</Navbar.Link>
       </Navbar.Collapse>
+
     </Navbar >
+
+
+
   );
 };
 
