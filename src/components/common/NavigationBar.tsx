@@ -83,7 +83,7 @@ function deleteAccountModal(){
     <Navbar fluid={true} rounded={true} className=' bg-white rounded-none border-b-0 md:border-b-2'>
       <Navbar.Brand>
         <div className='absolute left-2 whitespace-nowrap text-xl  font-semibold text-sky-600'>
-          Comments-System
+        React-Comment-System
         </div>
       </Navbar.Brand>
       <div className='flex  md:order-2'>
