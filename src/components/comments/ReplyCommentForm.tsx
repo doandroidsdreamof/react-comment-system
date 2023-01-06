@@ -6,7 +6,7 @@ import { commentObserver } from '../../store/reducers/userSlice'
 import {
   getAuth,
 } from 'firebase/auth';
-import { collection, addDoc, Timestamp } from 'firebase/firestore'
+import { collection, addDoc, Timestamp,setDoc,doc } from 'firebase/firestore'
 import { db } from '../../firebase';
 // context //
 import { AuthContext } from '../../context/AuthContext';
