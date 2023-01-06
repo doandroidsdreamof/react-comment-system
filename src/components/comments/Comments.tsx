@@ -36,7 +36,7 @@ const Comments: React.FC<CommentsData> = ({ items }: CommentsData[]) => {
 
   useEffect(() => {
     getReply()
-  }, [open,commentObserverRedux])
+  }, [open,commentObserverRedux,removedObserverRedux])
 
   async function deleteTodo(e: any) {
     e.preventDefault()
@@ -87,7 +87,7 @@ const Comments: React.FC<CommentsData> = ({ items }: CommentsData[]) => {
           <div className="flex items-center">
             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
               className="mr-2 w-6 h-6 rounded-full"
-              src={items.photoURL === null ? fallBack : items.photoURL}
+              src={items.photoURL === null || items?.userName === 'removed' ? fallBack : items.photoURL}
               alt={items?.userName} />{items?.userName}</p>
             <p className="text-xs text-gray-600 "><time
               title="date">{items?.date}</time></p>

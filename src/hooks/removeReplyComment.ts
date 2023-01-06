@@ -5,7 +5,7 @@ import { commentObserver, removedObserver } from '../store/reducers/userSlice'
 import {
   getAuth,
 } from 'firebase/auth';
-import { getDocs, collection, doc, setDoc, getDoc, addDoc, FieldValue,arrayRemove, Timestamp, where, query, updateDoc, arrayUnion } from 'firebase/firestore'
+import { getDocs, collection,collectionGroup,deleteDoc,doc, setDoc, getDoc, addDoc, FieldValue,arrayRemove, Timestamp, where, query, updateDoc, arrayUnion } from 'firebase/firestore'
 import { db } from '../firebase'
 // interfaces //
 import  {ReplyCommentsData} from '../types/interfaces'
@@ -24,18 +24,14 @@ async function removeReplyComment(datas: any) {
     nested:datas.replyComments.nested
   }
   try {
-    const q = query(collection(db, 'comments'), where('postID', '==', datas.replyComments.parentPostID ))
-    const querySnapshot = await getDocs(q)
-    querySnapshot.forEach((doc) => {
-      updateDoc(doc.ref, {
-        reply: arrayRemove(parseObj)
+    const idPost = await datas.replyComments.postID
+    const allPosts = await getDocs(collectionGroup(db, "sub-comments"))
+    allPosts.forEach((doc) => {
+      if(doc.data().postID == idPost){
+          deleteDoc(doc.ref)
+      }
 
-      })
-
-
-
-    })
-
+  });
 
 
   } catch (error) {
